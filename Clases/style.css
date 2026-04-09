@@ -1,0 +1,16 @@
+body {
+    background-color: aquamarine;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+.LIFONDO {
+    background-color: lightblue;
+    padding: 20px;
+}
+
+#Colores {
+    background-color: red;
+    padding: 20px;
+}
+/* tag id class  */
