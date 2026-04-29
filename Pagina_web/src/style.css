@@ -4,7 +4,7 @@
     --rojo-osc:#8e1a10;
     --crema:   #f5ede0;
     --oscuro:  #1a1008;
-    --dorado:  #d4a640;
+    --dorado:  #ffcc00; 
     --gris:    #8a7f74;
 }
 
@@ -13,6 +13,8 @@
 html { scroll-behavior: smooth; }
 
 body {
+    background: linear-gradient(180deg, var(--oscuro) 0%, #1c140d 50%, var(--oscuro) 100%);
+    background-attachment: fixed;
     background: var(--oscuro);
     color: var(--crema);
     font-family: 'Barlow', sans-serif;

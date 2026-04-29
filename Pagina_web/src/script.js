@@ -421,7 +421,7 @@ export default function App() {
         display: 'flex', flexDirection: 'column',
         justifyContent: 'center', alignItems: 'center',
         gap: '1rem',
-        background: 'var(--oscuro)',
+        background: 'transparent',
         color: 'var(--dorado)',
         fontFamily: "'Playfair Display', serif",
         fontSize: '1.5rem', fontStyle: 'italic',
