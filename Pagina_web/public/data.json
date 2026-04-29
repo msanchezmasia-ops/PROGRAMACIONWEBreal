@@ -4,7 +4,7 @@
       "id": 1,
       "nombre": "Margherita",
       "descripcion": "Tomate San Marzano, mozzarella fior di latte, albahaca fresca y aceite de oliva virgen.",
-      "precio": "$1.800",
+      "precio": "$31.800",
       "imagen": "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=600&q=80",
       "alt": "Pizza Margherita"
     },
@@ -12,7 +12,7 @@
       "id": 2,
       "nombre": "Quattro Formaggi",
       "descripcion": "Mozzarella, gorgonzola, parmesano y provolone sobre crema blanca y nuez tostada.",
-      "precio": "$2.200",
+      "precio": "$32.200",
       "imagen": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=600&q=80",
       "alt": "Pizza Quattro Formaggi"
     },
@@ -20,35 +20,38 @@
       "id": 3,
       "nombre": "Diavola",
       "descripcion": "Salame picante, tomate, mozzarella, ají rojo y un toque de miel de cayena.",
-      "precio": "$2.100",
+      "precio": "$35.100",
       "imagen": "https://images.unsplash.com/photo-1528137871618-79d2761e3fd5?w=600&q=80",
       "alt": "Pizza Diavola"
     }
   ],
   "carta": {
     "pizzas": [
-      { "id": 1, "nombre": "Margherita",          "descripcion": "Tomate, mozzarella, albahaca fresca",                     "precio": "$1.800" },
-      { "id": 2, "nombre": "Quattro Formaggi",    "descripcion": "Mozzarella, gorgonzola, parmesano, provolone",            "precio": "$2.200" },
-      { "id": 3, "nombre": "Diavola",             "descripcion": "Salame picante, tomate, mozzarella, ají rojo",            "precio": "$2.100" },
-      { "id": 4, "nombre": "Prosciutto e Rucola", "descripcion": "Jamón crudo, rúcula, mozzarella, parmesano",             "precio": "$2.400" },
-      { "id": 5, "nombre": "Funghi Tartufo",      "descripcion": "Hongos mixtos, crema de trufa, mozzarella, tomillo",     "precio": "$2.600" },
-      { "id": 6, "nombre": "Capricciosa",         "descripcion": "Jamón, alcauciles, aceitunas, champiñones, tomate",       "precio": "$2.300" },
-      { "id": 7, "nombre": "Napolitana",          "descripcion": "Tomate, mozzarella, anchoas, aceitunas negras, orégano", "precio": "$1.950" },
-      { "id": 8, "nombre": "Americana",           "descripcion": "Panceta, cheddar, cebolla caramelizada, mostaza",         "precio": "$2.150" }
+      { "id": 1, "nombre": "Margherita",          "descripcion": "Tomate, mozzarella, albahaca fresca",                     "precio": "$31.800" },
+      { "id": 2, "nombre": "Quattro Formaggi",    "descripcion": "Mozzarella, gorgonzola, parmesano, provolone",            "precio": "$32.200" },
+      { "id": 3, "nombre": "Diavola",             "descripcion": "Salame picante, tomate, mozzarella, ají rojo",            "precio": "$35.100" },
+      { "id": 4, "nombre": "Prosciutto e Rucola", "descripcion": "Jamón crudo, rúcula, mozzarella, parmesano",             "precio": "$32.400" },
+      { "id": 5, "nombre": "Funghi Tartufo",      "descripcion": "Hongos mixtos, crema de trufa, mozzarella, tomillo",     "precio": "$32.600" },
+      { "id": 6, "nombre": "Capricciosa",         "descripcion": "Jamón, alcauciles, aceitunas, champiñones, tomate",       "precio": "$34.300" },
+      { "id": 7, "nombre": "Napolitana",          "descripcion": "Tomate, mozzarella, anchoas, aceitunas negras, orégano", "precio": "$31.950" },
+      { "id": 8, "nombre": "Americana",           "descripcion": "Panceta, cheddar, cebolla caramelizada, mostaza",         "precio": "$32.000" },
+      { "id": 9, "nombre": "Fugazzeta",           "descripcion": "Mucha mozzarella, cebolla cortada en pluma, parmesano, orégano",         "precio": "$32.000" }
     ],
     "aperitivos": [
-      { "id": 1, "nombre": "Focaccia al Romero",    "descripcion": "Masa de pizza, aceite de oliva, romero y sal gruesa",  "precio": "$800"   },
-      { "id": 2, "nombre": "Tabla de Fiambres",     "descripcion": "Prosciutto, salame, mortadela, quesos y pan",          "precio": "$2.500" },
-      { "id": 3, "nombre": "Arancini",              "descripcion": "Croquetas de arroz rellenas de queso y ragú",          "precio": "$950"   },
-      { "id": 4, "nombre": "Bruschetta Classica",   "descripcion": "Pan tostado, tomate fresco, albahaca y ajo",           "precio": "$700"   },
-      { "id": 5, "nombre": "Carpaccio de Zucchini", "descripcion": "Calabacín en láminas, limón, parmesano y menta",       "precio": "$1.100" },
-      { "id": 6, "nombre": "Calzone Fritto",        "descripcion": "Calzone frito relleno de ricota y salame",             "precio": "$1.300" }
+      { "id": 1, "nombre": "Focaccia al Romero",    "descripcion": "Masa de pizza, aceite de oliva, romero y sal gruesa",  "precio": "$18.000"   },
+      { "id": 2, "nombre": "Tabla de Fiambres",     "descripcion": "Prosciutto, salame, mortadela, quesos y pan",          "precio": "$22.500" },
+      { "id": 3, "nombre": "Arancini",              "descripcion": "Croquetas de arroz rellenas de queso y ragú",          "precio": "$19.500"   },
+      { "id": 4, "nombre": "Bruschetta Classica",   "descripcion": "Pan tostado, tomate fresco, albahaca y ajo",           "precio": "$17.000"   },
+      { "id": 5, "nombre": "Carpaccio de Zucchini", "descripcion": "Calabacín en láminas, limón, parmesano y menta",       "precio": "$21.100" },
+      { "id": 6, "nombre": "Calzone Fritto",        "descripcion": "Calzone frito relleno de ricota y salame",             "precio": "$21.300" }
     ],
     "postres": [
-      { "id": 1, "nombre": "Tiramisú della Casa", "descripcion": "Receta tradicional con mascarpone y café espresso", "precio": "$1.100" },
-      { "id": 2, "nombre": "Panna Cotta",         "descripcion": "Con coulis de frutos rojos y menta fresca",         "precio": "$950"   },
-      { "id": 3, "nombre": "Pizza Nutella",       "descripcion": "Base de pizza dulce, nutella y frutillas frescas",  "precio": "$1.200" },
-      { "id": 4, "nombre": "Cannoli Siciliani",   "descripcion": "Rellenos de ricota con chips de chocolate",         "precio": "$850"   }
+      { "id": 1, "nombre": "Tiramisú della Casa", "descripcion": "Receta tradicional con mascarpone y café espresso", "precio": "$21.100" },
+      { "id": 2, "nombre": "Panna Cotta",         "descripcion": "Con coulis de frutos rojos y menta fresca",         "precio": "$19.500"   },
+      { "id": 3, "nombre": "Pizza Nutella",       "descripcion": "Base de pizza dulce, nutella y frutillas frescas",  "precio": "$21.200" },
+      { "id": 4, "nombre": "Cannoli Siciliani",   "descripcion": "Rellenos de ricota con chips de chocolate",         "precio": "$18.500"   },
+      { "id": 5, "nombre": "Affogato al Caffè",   "descripcion": "Helado de vainilla artesanal ahogado en café espresso caliente",         "precio": "$18.900"   },
+      { "id": 6, "nombre": "Torta Caprese",   "descripcion": "Tradicional pastel italiano de chocolate oscuro y almendras (sin harina)",         "precio": "$21.500"   }
     ]
   },
   "contacto": {
@@ -59,7 +62,7 @@
     "instagram": "@lapiazza.ba",
     "horarios": [
       { "dias": "Lunes – Viernes", "hora": "19:00 – 00:00" },
-      { "dias": "Sábados",         "hora": "12:00 – 01:00" },
+      { "dias": "Sábados",         "hora": "12:00 – 02:00" },
       { "dias": "Domingos",        "hora": "12:00 – 00:00" }
     ]
   }

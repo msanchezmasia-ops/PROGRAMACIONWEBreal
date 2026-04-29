@@ -108,7 +108,7 @@ nav ul a:hover { color: var(--dorado); }
 }
 .pizza-card:hover img {
     transform: scale(1.08);
-    filter: brightness(.45);
+    filter: brightness(.25);
 }
 .card-info {
     position: absolute; inset: 0;
