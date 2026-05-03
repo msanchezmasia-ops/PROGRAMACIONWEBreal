@@ -9,7 +9,7 @@ export default function Hero({ pizzasDestacadas }) {
                 Masa madre, ingredientes frescos y el horno de leña que lleva generaciones encendido.
             </p>
 
-            <div className="pizza-grid">   // cond ? o1 : o2
+            <div className="pizza-grid">
                 {pizzasDestacadas && pizzasDestacadas.length > 0 ? (
                 pizzasDestacadas.map(pizza => (
                 <PizzaCard key={pizza.id} pizza={pizza} />
