@@ -53,6 +53,7 @@
   },
   
   "contacto": {
+    "imagenLocal": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&q=80",
     "direccion": "Av. Corrientes 1847, Buenos Aires",
     "telefono":  "+54 11 4372-0000",
     "whatsapp":  "+54 9 11 5555-1847",

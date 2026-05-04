@@ -2,7 +2,6 @@
 import FormularioReserva from './FormularioReserva';
 import '../globals.css';
 
-
 export default function Contacto({ contacto }) {
     return (
         <>
@@ -11,10 +10,11 @@ export default function Contacto({ contacto }) {
             </div>
 
             <section id="contacto">
-                <div className="contacto-inner contacto-inner--tres-col">
-
-                    {/* Columna 1: horarios de atención */}
+                <div className="contacto-inner contacto-inner--tres-col">                    
                     <div className="contacto-texto">
+                        
+                        
+
                         <h2>Vení a visitarnos</h2>
                         <p>
                             Estamos en el corazón del barrio, esperándote con el horno encendido
@@ -28,11 +28,14 @@ export default function Contacto({ contacto }) {
                         </div>
                     </div>
 
-                    {/* Columna 2: formulario de reserva */}
                     <FormularioReserva />
-
-                    {/* Columna 3: datos de contacto */}
                     <div className="contacto-datos">
+                        
+                        {contacto.imagenLocal && (
+                            <div className="foto-local-wrap">
+                                <img src={contacto.imagenLocal} alt="Interior de La Piazza" />
+                            </div>
+                        )}
                         <DatoContacto icono="📍" etiqueta="Dirección" valor={contacto.direccion} />
                         <DatoContacto icono="📞" etiqueta="Teléfono" valor={contacto.telefono} />
                         <DatoContacto icono="💬" etiqueta="WhatsApp" valor={contacto.whatsapp} />
@@ -45,7 +48,6 @@ export default function Contacto({ contacto }) {
         </>
     );
 }
-
 
 // Dato de contacto: ícono + etiqueta + valor
 function DatoContacto({ icono, etiqueta, valor }) {
