@@ -1,26 +1,800 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;  
 
+
+/* ══════════════════════════════════════════════
+   VARIABLES GLOBALES
+   ══════════════════════════════════════════════ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --rojo: #c0392b;
+  --rojo-osc: #8e1a10;
+  --crema: #f5ede0;
+  --oscuro: #1a1008;
+  --dorado: #ffcc00;
+  --gris: #8a7f74;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ══════════════════════════════════════════════
+   RESET Y BASE
+   ══════════════════════════════════════════════ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+html {
+  scroll-behavior: smooth;
+}
+
+/*
+  El BODY es el único elemento que define el color de fondo de la página.
+  El resto de las secciones usan background: transparent y "heredan" este fondo.
+*/
+body {
+  background: var(--oscuro);
+  color: var(--crema);
+  font-family: 'Barlow', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+}
+
+
+/* ══════════════════════════════════════════════
+   ESTADOS DE CARGA Y ERROR
+   Clases usadas en script.js para los estados
+   asíncronos del fetch a data.json
+   ══════════════════════════════════════════════ */
+.estado-carga,
+.estado-error {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+  padding: 2rem;
+  /* fondo transparente: toma el color del body */
+  background: transparent;
+}
+
+.estado-carga {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-style: italic;
+  color: var(--dorado);
+}
+
+.estado-carga span {
+  font-size: 3rem;
+}
+
+.estado-error {
+  color: var(--rojo);
+  font-family: 'Barlow', sans-serif;
+}
+
+.estado-error span {
+  font-size: 3rem;
+}
+
+.estado-error strong {
+  font-size: 1.2rem;
+}
+
+.estado-error p {
+  color: var(--gris);
+  font-size: .9rem;
+}
+
+
+/* ══════════════════════════════════════════════
+   NAV
+   ══════════════════════════════════════════════ */
+nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem 4rem;
+  /* semi-transparente sobre el body oscuro */
+  background: rgba(26, 16, 8, .85);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(212, 166, 64, .2);
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  font-style: italic;
+  color: var(--dorado);
+  letter-spacing: 2px;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 2.5rem;
+}
+
+nav ul a {
+  text-decoration: none;
+  color: var(--crema);
+  font-size: .85rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  transition: color .3s;
+}
+
+nav ul a:hover {
+  color: var(--dorado);
+}
+
+
+/* ══════════════════════════════════════════════
+   HERO (#inicio)
+   ══════════════════════════════════════════════ */
+#inicio {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 6rem 2rem 4rem;
+  position: relative;
+  /*
+    Gradientes decorativos encima del body.
+    El último valor NO es un color de fondo sólido,
+    sino que termina en transparent para que el body se vea.
+  */
+  background:
+    radial-gradient(ellipse at 20% 60%, rgba(192, 57, 43, .25) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 30%, rgba(212, 166, 64, .12) 0%, transparent 50%);
+}
+
+/* patrón de puntos decorativo */
+#inicio::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4a640' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+.hero-label {
+  font-size: .75rem;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--dorado);
+  margin-bottom: 1rem;
+  animation: fadeUp .8s ease both;
+}
+
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3.5rem, 9vw, 8rem);
+  line-height: 1;
+  font-style: italic;
+  color: var(--crema);
+  animation: fadeUp .9s .1s ease both;
+}
+
+.hero-title span {
+  color: var(--dorado);
+}
+
+.hero-sub {
+  margin-top: 1.2rem;
+  font-size: 1.05rem;
+  color: var(--gris);
+  max-width: 480px;
+  animation: fadeUp 1s .2s ease both;
+}
+
+
+/* ══════════════════════════════════════════════
+   PIZZA GRID
+   ══════════════════════════════════════════════ */
+.pizza-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  max-width: 1100px;
+  width: 100%;
+  margin: 3.5rem auto 0;
+  padding: 0 2rem;
+  animation: fadeUp 1s .3s ease both;
+}
+
+.pizza-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+  aspect-ratio: 4 / 3;
+  cursor: pointer;
+}
+
+.pizza-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .5s ease, filter .5s ease;
+}
+
+.pizza-card:hover img {
+  transform: scale(1.08);
+  filter: brightness(.25);
+  /* tu ajuste */
+}
+
+.card-info {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 1.5rem;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity .4s ease, transform .4s ease;
+  pointer-events: none;
+  background: transparent;
+  /* no tapa el body */
+}
+
+.pizza-card:hover .card-info {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.card-info::before {
+  content: '';
+  position: absolute;
+  inset: 20px;
+  border: 1px solid var(--dorado);
+  pointer-events: none;
+}
+
+.card-info h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.45rem;
+  color: var(--dorado);
+  margin-bottom: .5rem;
+}
+
+.card-info p {
+  font-size: .82rem;
+  color: var(--crema);
+  line-height: 1.5;
+  max-width: 220px;
+}
+
+.card-info .precio {
+  margin-top: .8rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--dorado);
+  letter-spacing: 1px;
+}
+
+.card-tag {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: .6rem 1rem;
+  background: linear-gradient(to top, rgba(26, 16, 8, .9), transparent);
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--crema);
+  transition: opacity .3s;
+}
+
+.pizza-card:hover .card-tag {
+  opacity: 0;
+}
+
+
+/* ══════════════════════════════════════════════
+   CTA
+   ══════════════════════════════════════════════ */
+.cta-wrap {
+  text-align: center;
+  margin: 3.5rem 0 0;
+  animation: fadeUp 1s .4s ease both;
+}
+
+/*
+  Botones: único elemento (además del body) con color de fondo propio.
+  El ::before es el fill animado al hacer hover.
+*/
+.btn-carta {
+  display: inline-block;
+  text-decoration: none;
+  background: transparent;
+  color: var(--dorado);
+  border: 1px solid var(--dorado);
+  padding: 1rem 2.8rem;
+  font-size: .8rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-family: 'Barlow', sans-serif;
+  font-weight: 600;
+  position: relative;
+  overflow: hidden;
+  transition: color .4s;
+  cursor: pointer;
+}
+
+.btn-carta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--dorado);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .4s ease;
+  z-index: -1;
+}
+
+.btn-carta:hover {
+  color: var(--oscuro);
+}
+
+.btn-carta:hover::before {
+  transform: scaleX(1);
+}
+
+
+/* ══════════════════════════════════════════════
+   DIVISOR
+   ══════════════════════════════════════════════ */
+.divisor {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  max-width: 700px;
+  margin: 5rem auto;
+  padding: 0 2rem;
+}
+
+.divisor span {
+  flex: 1;
+  height: 1px;
+  background: rgba(212, 166, 64, .25);
+}
+
+.divisor em {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  color: var(--dorado);
+  font-size: .9rem;
+  white-space: nowrap;
+  letter-spacing: 2px;
+}
+
+
+/* ══════════════════════════════════════════════
+   CARTA (#carta)
+   ══════════════════════════════════════════════ */
+#carta {
+  padding: 2rem 2rem 5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  background: transparent;
+  /* hereda el body */
+}
+
+.seccion-titulo {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-style: italic;
+  text-align: center;
+  color: var(--crema);
+  margin-bottom: .5rem;
+}
+
+.seccion-sub {
+  text-align: center;
+  color: var(--gris);
+  font-size: .85rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 3rem;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 3rem;
+  border-bottom: 1px solid rgba(212, 166, 64, .2);
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--gris);
+  font-family: 'Barlow', sans-serif;
+  font-size: .8rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: .8rem 2rem;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color .3s, border-color .3s;
+}
+
+.tab-btn.activo {
+  color: var(--dorado);
+  border-color: var(--dorado);
+}
+
+/* Menu items */
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1px;
+  background: rgba(212, 166, 64, .1);
+  border: 1px solid rgba(212, 166, 64, .1);
+}
+
+.menu-item {
+  padding: 1.6rem;
+  background: var(--oscuro);
+  /* coincide con el body para parecer transparente */
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  transition: background .3s;
+}
+
+.menu-item:hover {
+  background: rgba(212, 166, 64, .06);
+}
+
+.menu-item-info h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  color: var(--crema);
+  margin-bottom: .3rem;
+}
+
+.menu-item-info p {
+  font-size: .8rem;
+  color: var(--gris);
+  line-height: 1.5;
+}
+
+.menu-item-precio {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--dorado);
+  white-space: nowrap;
+}
+
+
+/* ══════════════════════════════════════════════
+   CONTACTO (#contacto)
+   ══════════════════════════════════════════════ */
+#contacto {
+  background: transparent;
+  /* hereda el body */
+  border-top: 1px solid rgba(212, 166, 64, .15);
+  padding: 5rem 2rem;
+}
+
+.contacto-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+.contacto-inner--tres-col {
+  max-width: 1200px;
+  grid-template-columns: 1fr 1.2fr 1fr;
+  gap: 3rem;
+}
+
+.contacto-texto h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-style: italic;
+  margin-bottom: 1rem;
+  color: var(--crema);
+}
+
+.contacto-texto p {
+  color: var(--gris);
+  line-height: 1.8;
+  font-size: .95rem;
+}
+
+.contacto-datos {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+
+.dato {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.dato-icono {
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  border: 1px solid rgba(212, 166, 64, .4);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  color: var(--dorado);
+  background: transparent;
+}
+
+.dato-texto strong {
+  display: block;
+  font-size: .75rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--dorado);
+  margin-bottom: .25rem;
+}
+
+.dato-texto span {
+  font-size: .9rem;
+  color: var(--crema);
+}
+
+/* Horarios */
+.horarios {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border: 1px solid rgba(212, 166, 64, .15);
+  background: transparent;
+}
+
+.horarios h3 {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  color: var(--dorado);
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.hora-fila {
+  display: flex;
+  justify-content: space-between;
+  font-size: .85rem;
+  padding: .4rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, .05);
+  color: var(--gris);
+}
+
+.hora-fila:last-child {
+  border-bottom: none;
+}
+
+.hora-fila span:last-child {
+  color: var(--crema);
+}
+
+
+/* ══════════════════════════════════════════════
+   FORMULARIO DE RESERVA
+   ══════════════════════════════════════════════ */
+.reserva-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  border: 1px solid rgba(212, 166, 64, .2);
+  padding: 2rem;
+  background: transparent;
+  /* hereda el body */
+}
+
+.reserva-titulo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-style: italic;
+  color: var(--dorado);
+  margin-bottom: .4rem;
+}
+
+.campo-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: .4rem;
+}
+
+.campo-label {
+  font-size: .75rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gris);
+}
+
+.campo-input {
+  background: transparent;
+  /* hereda el body */
+  border: 1px solid rgba(212, 166, 64, .25);
+  color: var(--crema);
+  font-family: 'Barlow', sans-serif;
+  font-size: .95rem;
+  padding: .7rem 1rem;
+  outline: none;
+  transition: border-color .3s;
+  color-scheme: dark;
+  /* para el picker de fecha */
+}
+
+.campo-input:focus {
+  border-color: var(--dorado);
+}
+
+/* Borde rojo en campos con error */
+.campo-input--error {
+  border-color: var(--rojo);
+}
+
+/* Mensaje de error debajo del input */
+.campo-error {
+  font-size: .78rem;
+  color: var(--rojo);
+  letter-spacing: .5px;
+}
+
+/* Botón de submit: hereda .btn-carta + ancho completo */
+.reserva-btn {
+  width: 100%;
+  margin-top: .4rem;
+  text-align: center;
+}
+
+
+/* ══════════════════════════════════════════════
+   MENSAJE DE ÉXITO
+   ══════════════════════════════════════════════ */
+.reserva-exito {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1rem;
+  border: 1px solid rgba(212, 166, 64, .3);
+  padding: 2.5rem 2rem;
+  background: transparent;
+  /* hereda el body */
+  animation: fadeUp .6s ease both;
+}
+
+.reserva-exito-icono {
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.reserva-exito h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-style: italic;
+  color: var(--dorado);
+}
+
+.reserva-exito p {
+  font-size: .92rem;
+  color: var(--crema);
+  line-height: 1.7;
+  max-width: 320px;
+}
+
+.reserva-exito-sub {
+  font-size: .82rem !important;
+  color: var(--gris) !important;
+}
+
+.reserva-exito em {
+  color: var(--dorado);
+  font-style: normal;
+}
+
+
+/* ══════════════════════════════════════════════
+   FOOTER
+   ══════════════════════════════════════════════ */
+footer {
+  text-align: center;
+  padding: 2rem;
+  font-size: .75rem;
+  color: var(--gris);
+  letter-spacing: 1px;
+  border-top: 1px solid rgba(255, 255, 255, .05);
+  background: transparent;
+}
+
+footer em {
+  color: var(--dorado);
+  font-style: normal;
+}
+
+
+/* ══════════════════════════════════════════════
+   ANIMACIONES
+   ══════════════════════════════════════════════ */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+
+/* ══════════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .contacto-inner--tres-col {
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+  }
+
+  /* El formulario ocupa el ancho completo en la segunda fila */
+  .reserva-form,
+  .reserva-exito {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 768px) {
+  nav {
+    padding: 1rem 1.5rem;
+  }
+
+  nav ul {
+    gap: 1.2rem;
+  }
+
+  .pizza-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .contacto-inner {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .contacto-inner--tres-col {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 500px) {
+  .pizza-grid {
+    grid-template-columns: 1fr;
+  }
 }
