@@ -1,4 +1,4 @@
-
+import Link from 'next/link';
 import PizzaCard from "./PizzaCard";
 export default function Hero({ pizzasDestacadas }) {
     return (
@@ -19,7 +19,9 @@ export default function Hero({ pizzasDestacadas }) {
             </div>
 
             <div className="cta-wrap">
-                <a href="#carta" className="btn-carta">Ver carta completa</a>
+                <Link href="/carta" className="btn-carta">
+                    Ver carta completa
+                </Link>
             </div>
         </section>
     );

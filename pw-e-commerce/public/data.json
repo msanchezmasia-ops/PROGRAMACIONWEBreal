@@ -27,33 +27,31 @@
   ],
   "carta": {
     "pizzas": [
-      { "id": 1, "nombre": "Margherita",          "descripcion": "Tomate, mozzarella, albahaca fresca",                     "precio": "$31.800" },
-      { "id": 2, "nombre": "Quattro Formaggi",    "descripcion": "Mozzarella, gorgonzola, parmesano, provolone",            "precio": "$32.200" },
-      { "id": 3, "nombre": "Diavola",             "descripcion": "Salame picante, tomate, mozzarella, ají rojo",            "precio": "$35.100" },
-      { "id": 4, "nombre": "Prosciutto e Rucola", "descripcion": "Jamón crudo, rúcula, mozzarella, parmesano",             "precio": "$32.400" },
-      { "id": 5, "nombre": "Funghi Tartufo",      "descripcion": "Hongos mixtos, crema de trufa, mozzarella, tomillo",     "precio": "$32.600" },
-      { "id": 6, "nombre": "Capricciosa",         "descripcion": "Jamón, alcauciles, aceitunas, champiñones, tomate",       "precio": "$34.300" },
-      { "id": 7, "nombre": "Napolitana",          "descripcion": "Tomate, mozzarella, anchoas, aceitunas negras, orégano", "precio": "$31.950" },
-      { "id": 8, "nombre": "Americana",           "descripcion": "Panceta, cheddar, cebolla caramelizada, mostaza",         "precio": "$32.000" },
-      { "id": 9, "nombre": "Fugazzeta",           "descripcion": "Mucha mozzarella, cebolla cortada en pluma, parmesano, orégano",         "precio": "$32.000" }
+      { "id": 1, "nombre": "Margherita", "descripcion": "Tomate San Marzano, mozzarella fior di latte, albahaca fresca y aceite de oliva virgen.", "precio": "$31.800", "imagen": "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=600&q=80" },
+      { "id": 2, "nombre": "Quattro Formaggi", "descripcion": "Mozzarella, gorgonzola, parmesano y provolone sobre crema blanca y nuez tostada.", "precio": "$32.200", "imagen": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=600&q=80" },
+      { "id": 3, "nombre": "Diavola", "descripcion": "Salame picante, tomate, mozzarella, ají rojo y un toque de miel de cayena.", "precio": "$35.100", "imagen": "https://images.unsplash.com/photo-1528137871618-79d2761e3fd5?w=600&q=80" },
+      { "id": 4, "nombre": "Fugazzeta", "descripcion": "Masa alta con doble mozzarella, cebolla asada, orégano y un toque de oliva.", "precio": "$30.500", "imagen": "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=600&q=80" },
+      { "id": 5, "nombre": "Prosciutto e Rucola", "descripcion": "Mozzarella, jamón crudo italiano, rúcula fresca y escamas de parmesano.", "precio": "$36.000", "imagen": "https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?w=600&q=80" },
+      { "id": 6, "nombre": "Napoletana", "descripcion": "Tomate, mozzarella, anchoas de Mar del Plata, ajo y alcaparras.", "precio": "$33.400", "imagen": "https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?w=600&q=80" }
     ],
     "aperitivos": [
-      { "id": 1, "nombre": "Focaccia al Romero",    "descripcion": "Masa de pizza, aceite de oliva, romero y sal gruesa",  "precio": "$18.000"   },
-      { "id": 2, "nombre": "Tabla de Fiambres",     "descripcion": "Prosciutto, salame, mortadela, quesos y pan",          "precio": "$22.500" },
-      { "id": 3, "nombre": "Arancini",              "descripcion": "Croquetas de arroz rellenas de queso y ragú",          "precio": "$19.500"   },
-      { "id": 4, "nombre": "Bruschetta Classica",   "descripcion": "Pan tostado, tomate fresco, albahaca y ajo",           "precio": "$17.000"   },
-      { "id": 5, "nombre": "Carpaccio de Zucchini", "descripcion": "Calabacín en láminas, limón, parmesano y menta",       "precio": "$21.100" },
-      { "id": 6, "nombre": "Calzone Fritto",        "descripcion": "Calzone frito relleno de ricota y salame",             "precio": "$21.300" }
+      { "id": 1, "nombre": "Fainá Clásica", "descripcion": "Porción de fainá tradicional con pimienta negra recién molida", "precio": "$3.500", "imagen": "https://images.unsplash.com/photo-1599490659213-e2b9527bd087?w=600&q=80" },
+      { "id": 2, "nombre": "Fainá con Queso", "descripcion": "Fainá con cubierta de mozzarella gratinada y cebollita de verdeo", "precio": "$4.800", "imagen": "https://images.unsplash.com/photo-1628840042765-356cda07504e?w=600&q=80" },
+      { "id": 3, "nombre": "Empanada de Carne Cortada a Cuchillo", "descripcion": "Masa casera, carne seleccionada, huevo, aceitunas y especias", "precio": "$3.200", "imagen": "https://images.unsplash.com/photo-1626804475297-41609ea264eb?w=600&q=80" },
+      { "id": 4, "nombre": "Empanada Caprese", "descripcion": "Rellena de tomates asados, mozzarella y albahaca fresca", "precio": "$3.000", "imagen": "https://images.unsplash.com/photo-1541529086526-db283c563270?w=600&q=80" },
+      { "id": 5, "nombre": "Provoleta al Horno", "descripcion": "Provoleta crujiente por fuera, fundida por dentro, con orégano y ají molido", "precio": "$12.500", "imagen": "https://images.unsplash.com/photo-1633504581786-316c8002b1b9?w=600&q=80" },
+      { "id": 6, "nombre": "Calzone Fritto", "descripcion": "Calzone frito relleno de ricota y salame", "precio": "$21.300", "imagen": "https://images.unsplash.com/photo-1564834724105-918b73d1b9e0?w=600&q=80" }
     ],
     "postres": [
-      { "id": 1, "nombre": "Tiramisú della Casa", "descripcion": "Receta tradicional con mascarpone y café espresso", "precio": "$21.100" },
-      { "id": 2, "nombre": "Panna Cotta",         "descripcion": "Con coulis de frutos rojos y menta fresca",         "precio": "$19.500"   },
-      { "id": 3, "nombre": "Pizza Nutella",       "descripcion": "Base de pizza dulce, nutella y frutillas frescas",  "precio": "$21.200" },
-      { "id": 4, "nombre": "Cannoli Siciliani",   "descripcion": "Rellenos de ricota con chips de chocolate",         "precio": "$18.500"   },
-      { "id": 5, "nombre": "Affogato al Caffè",   "descripcion": "Helado de vainilla artesanal ahogado en café espresso caliente",         "precio": "$18.900"   },
-      { "id": 6, "nombre": "Torta Caprese",   "descripcion": "Tradicional pastel italiano de chocolate oscuro y almendras (sin harina)",         "precio": "$21.500"   }
+      { "id": 1, "nombre": "Tiramisú della Casa", "descripcion": "Receta tradicional con mascarpone y café espresso", "precio": "$21.100", "imagen": "https://images.unsplash.com/photo-1571877227200-a08c8e4d7653?w=600&q=80" },
+      { "id": 2, "nombre": "Panna Cotta", "descripcion": "Con coulis de frutos rojos y menta fresca", "precio": "$19.500", "imagen": "https://images.unsplash.com/photo-1488477181946-6428a0291777?w=600&q=80" },
+      { "id": 3, "nombre": "Pizza Nutella", "descripcion": "Base de pizza dulce, nutella y frutillas frescas", "precio": "$21.200", "imagen": "https://images.unsplash.com/photo-1587314168485-3236d6710814?w=600&q=80" },
+      { "id": 4, "nombre": "Cannoli Siciliani", "descripcion": "Rellenos de ricota con chips de chocolate", "precio": "$18.500", "imagen": "https://images.unsplash.com/photo-1551024506-0cb4a1cb1c26?w=600&q=80" },
+      { "id": 5, "nombre": "Affogato al Caffè", "descripcion": "Helado de vainilla artesanal ahogado en café espresso caliente", "precio": "$18.900", "imagen": "https://images.unsplash.com/photo-1572656306390-40a9fc3899f7?w=600&q=80" },
+      { "id": 6, "nombre": "Torta Caprese", "descripcion": "Tradicional pastel italiano de chocolate oscuro y almendras (sin harina)", "precio": "$21.500", "imagen": "https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?w=600&q=80" }
     ]
   },
+  
   "contacto": {
     "direccion": "Av. Corrientes 1847, Buenos Aires",
     "telefono":  "+54 11 4372-0000",
