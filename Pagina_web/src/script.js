@@ -1,8 +1,4 @@
-// ══════════════════════════════════════════════
-//  IMPORTS
-//  useState  → manejo de estado local en componentes
-//  useEffect → efectos secundarios (fetch al montar)
-// ══════════════════════════════════════════════
+
 import { useState, useEffect } from 'react';
 import './style.css';
 import Nav from './components/Nav';
@@ -11,27 +7,6 @@ import FormularioReserva from './components/FormularioReserva';
 import Hero from './components/Hero';
 import Contacto from './components/Contacto';
 import Carta from './components/Carta';
-
-// Ítem de la carta (pizza / aperitivo / postre)
-
-
-// Fila de horario en la sección de contacto
-
-
-
-
-
-// ══════════════════════════════════════════════
-//  FORMULARIO DE RESERVA
-//  Maneja sus propios estados internos (campos,
-//  errores, éxito). No depende de props externas.
-// ══════════════════════════════════════════════
-
-// ══════════════════════════════════════════════
-//  SECCIONES DE LA PÁGINA
-// ══════════════════════════════════════════════
-
-// Sección de contacto: horarios + formulario + datos
 
 // Pie de página
 function Footer() {
