@@ -6,7 +6,7 @@ export default function Carta({ carta }) {
     const [carrito, setCarrito] = useState([]);
 
     // --- ESTADOS PARA EL CHECKOUT ---
-    const [modalPaso, setModalPaso] = useState(0); 
+    const [modalPaso, setModalPaso] = useState(0);
     const [dni, setDni] = useState('');
     const [direccion, setDireccion] = useState(''); // <-- NUEVO ESTADO
     const [email, setEmail] = useState(''); // <-- NUEVO ESTADO
@@ -69,21 +69,21 @@ export default function Carta({ carta }) {
 
     const guardarPedido = () => {
         const baseDeDatos = JSON.parse(localStorage.getItem('pedidos_lapiazza')) || {};
-        
+
         // Guardamos el pedido incluyendo la dirección
         baseDeDatos[dni] = {
             items: carrito,
             total: totalCarrito,
-            direccion: direccion, 
-            email: email, 
+            direccion: direccion,
+            email: email,
             fecha: new Date().toLocaleString()
         };
 
         localStorage.setItem('pedidos_lapiazza', JSON.stringify(baseDeDatos));
-        
-        setCarrito([]); 
-        setModalPaso(3); 
-        
+
+        setCarrito([]);
+        setModalPaso(3);
+
         setTimeout(() => {
             setModalPaso(0);
         }, 4000); // Le damos 4 segundos a la pantalla de éxito
@@ -98,7 +98,7 @@ export default function Carta({ carta }) {
             </div>
 
             <section id="carta" className="carta-con-carrito">
-                
+
                 {/* --- COLUMNA IZQUIERDA: EL MENÚ --- */}
                 <div className="carta-principal">
                     <h2 className="seccion-titulo">Lo que sale del horno</h2>
@@ -120,11 +120,11 @@ export default function Carta({ carta }) {
 
                     <div className="menu-grid">
                         {carta[tabActiva].map(item => (
-                            <MenuItem 
-                                key={item.id} 
-                                item={item} 
-                                agregarAlCarrito={agregarAlCarrito} 
-                                esPizza={tabActiva === 'pizzas'} 
+                            <MenuItem
+                                key={item.id}
+                                item={item}
+                                agregarAlCarrito={agregarAlCarrito}
+                                esPizza={tabActiva === 'pizzas'}
                             />
                         ))}
                     </div>
@@ -133,7 +133,7 @@ export default function Carta({ carta }) {
                 {/* --- COLUMNA DERECHA: EL CARRITO --- */}
                 <div className="carrito-sidebar">
                     <h3>🛒 Tu Pedido</h3>
-                    
+
                     {carrito.length === 0 ? (
                         <p style={{ color: 'var(--gris)' }}>Tu carrito está vacío.</p>
                     ) : (
@@ -152,14 +152,14 @@ export default function Carta({ carta }) {
                                     </li>
                                 ))}
                             </ul>
-                            
+
                             <div className="carrito-total">
                                 <span>Total:</span>
                                 <span>${totalCarrito.toLocaleString('es-AR')}</span>
                             </div>
-                            
-                            <button 
-                                className="btn-carta w-full mt-4" 
+
+                            <button
+                                className="btn-carta w-full mt-4"
                                 style={{ width: '100%' }}
                                 onClick={iniciarCheckout}
                             >
@@ -176,7 +176,7 @@ export default function Carta({ carta }) {
             {modalPaso > 0 && (
                 <div className="modal-overlay">
                     <div className="modal-content">
-                        
+
                         {/* PASO 1: PEDIR DNI Y DIRECCIÓN */}
                         {modalPaso === 1 && (
                             <>
@@ -184,30 +184,30 @@ export default function Carta({ carta }) {
                                 <p style={{ color: 'var(--gris)', marginBottom: '1.5rem' }}>
                                     Ingresá tus datos para el envío.
                                 </p>
-                                
+
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '1.5rem' }}>
                                     {/* INPUT DNI */}
-                                    <input 
-                                        type="number" 
-                                        placeholder="DNI (Ej: 35123456)" 
-                                        value={dni} 
+                                    <input
+                                        type="number"
+                                        placeholder="DNI (Ej: 35123456)"
+                                        value={dni}
                                         onChange={(e) => setDni(e.target.value)}
                                         style={{ margin: 0 }} // Anula el margen global para usar el gap del flex
                                         autoFocus
                                     />
                                     {/* INPUT DIRECCIÓN */}
-                                    <input 
-                                        type="text" 
-                                        placeholder="Dirección (Calle, Nº, Localidad)" 
-                                        value={direccion} 
+                                    <input
+                                        type="text"
+                                        placeholder="Dirección (Calle, Nº, Localidad)"
+                                        value={direccion}
                                         onChange={(e) => setDireccion(e.target.value)}
                                         style={{ margin: 0 }}
                                     />
 
-                                    <input 
-                                        type="text" 
-                                        placeholder="Email (Ej: email@ejemplo.com)" 
-                                        value={email} 
+                                    <input
+                                        type="text"
+                                        placeholder="Email (Ej: email@ejemplo.com)"
+                                        value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                         style={{ margin: 0 }}
                                     />
@@ -243,7 +243,7 @@ export default function Carta({ carta }) {
                                     </strong>
                                 </div>
                                 <p style={{ color: 'var(--gris)', fontSize: '0.9rem' }}>¿Querés reemplazarlo por el pedido actual?</p>
-                                
+
                                 <div className="modal-botones">
                                     <button className="btn-cancelar" onClick={() => setModalPaso(0)}>Mantener el viejo</button>
                                     <button className="btn-carta" onClick={guardarPedido}>Sí, reemplazar</button>
@@ -256,7 +256,7 @@ export default function Carta({ carta }) {
                             <>
                                 <h3>🍕 ¡Pedido Confirmado!</h3>
                                 <p style={{ color: 'var(--gris)', marginTop: '1rem' }}>
-                                    Tu pedido está marchando hacia <strong>{direccion}</strong>.<br/>
+                                    Tu pedido está marchando hacia <strong>{direccion}</strong>.<br />
                                     ¡Prepará la mesa que en un rato llega!
                                 </p>
                             </>
@@ -278,15 +278,15 @@ function MenuItem({ item, agregarAlCarrito, esPizza }) {
     const precioChica = Math.round(precioBase * 0.7);
 
     return (
-        <div 
-            className="menu-item" 
-            onMouseEnter={() => setHover(true)} 
+        <div
+            className="menu-item"
+            onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
         >
             <div className="menu-item-info">
                 <h4>{item.nombre}</h4>
                 <p>{item.descripcion}</p>
-                
+
                 <div className="botones-agregar">
                     {esPizza ? (
                         <>

@@ -1,18 +1,24 @@
 import Link from 'next/link';
+import Image from 'next/image'; // <-- Agregamos el import oficial de Next
 
 export default function Nav() {
     return (
         <nav>
-            <div className="logo">La Piazza eutywieutyiweuytiuweyti
+            <div className="logo">
+                {/* Usamos <Image /> en lugar de <img /> y le pasamos ancho y alto */}
+                <Image 
+                    src="/img/logocompleto.png" 
+                    alt="Logo La Piazza" 
+                    width={45} 
+                    height={45} 
+                    className="nav-img" 
+                />
+                <span>La Piazza</span>
             </div>
+            
             <ul>
-                {/* href="/" nos lleva a la landing page principal */}
                 <li><Link href="/">Inicio</Link></li>
-                
-                {/* href="/carta" busca la carpeta app/carta/page.js */}
                 <li><Link href="/carta">Carta</Link></li>
-                
-                {/* href="/contacto" busca la carpeta app/contacto/page.js */}
                 <li><Link href="/contacto">Reserva</Link></li>
             </ul>
         </nav>

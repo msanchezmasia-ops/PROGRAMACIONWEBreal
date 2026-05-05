@@ -660,3 +660,23 @@ footer em {
   color: var(--rojo);
   background: rgba(192, 57, 43, 0.1);
 }
+
+
+/* ══════════════════════════════════════════════ 
+   SEPARADOR DE LA CARTA 
+══════════════════════════════════════════════ */
+.separador-carta {
+  display: flex;
+  justify-content: center; /* Centra el logo horizontalmente */
+  align-items: center;
+  margin: 3rem 0; /* Da un lindo espacio arriba y abajo */
+  width: 100%;
+}
+
+.logo-carta {
+  width: 12px; /* Tamaño del logo en el centro de la pantalla */
+  height: auto;
+  object-fit: contain;
+  opacity: 0.9; /* Un toquecito de transparencia para que no pelee con los textos */
+  filter: drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.5)); /* Sombra suave para que resalte en el fondo oscuro */
+}
