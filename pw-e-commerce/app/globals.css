@@ -118,9 +118,7 @@ main {
   transform: translateY(-2px);
 }
 
-/* ══════════════════════════════════════════════
-   4. NAVEGACIÓN (HEADER) Y FOOTER
-   ══════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════ 4. NAVEGACIÓN (HEADER) Y FOOTER══════════════════════════════════════════════ */
 nav {
   display: flex;
   justify-content: space-between;
@@ -128,17 +126,31 @@ nav {
   padding: 1.5rem 3rem;
   border-bottom: 1px solid rgba(255, 204, 0, 0.1);
 }
+
 .logo {
+  display: flex;
+  align-items: center; /* Alinea la imagen y el texto en el centro vertical */
+  gap: 0.8rem; /* Separa la imagen de la palabra "La Piazza" */
+  
+  /* ¡Recuperamos tus estilos originales! */
   font-family: 'Playfair Display', serif;
   font-size: 1.8rem;
   font-weight: 700;
   color: var(--dorado);
 }
+
+.nav-img {
+  width: 45px; /* Tamaño del logo */
+  height: 45px;
+  object-fit: contain;
+}
+
 nav ul {
   display: flex;
   gap: 2rem;
   list-style: none;
 }
+
 nav a {
   color: var(--crema);
   text-decoration: none;
@@ -148,6 +160,7 @@ nav a {
   font-size: 0.85rem;
   transition: color 0.3s;
 }
+
 nav a:hover { color: var(--dorado); }
 
 footer {
@@ -156,8 +169,9 @@ footer {
   font-size: 0.8rem;
   color: var(--gris);
   border-top: 1px solid rgba(255,255,255,0.05);
-  margin-top: auto; /* Se empuja hacia abajo */
+  margin-top: auto;
 }
+
 footer em {
   color: var(--dorado);
   font-style: normal;

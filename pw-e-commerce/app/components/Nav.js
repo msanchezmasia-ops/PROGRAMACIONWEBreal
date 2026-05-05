@@ -3,7 +3,8 @@ import Link from 'next/link';
 export default function Nav() {
     return (
         <nav>
-            <div className="logo">La Piazza</div>
+            <div className="logo">La Piazza eutywieutyiweuytiuweyti
+            </div>
             <ul>
                 {/* href="/" nos lleva a la landing page principal */}
                 <li><Link href="/">Inicio</Link></li>
