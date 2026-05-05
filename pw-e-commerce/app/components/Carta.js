@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+
 import '../globals.css';
 
 export default function Carta({ carta }) {
@@ -8,8 +9,8 @@ export default function Carta({ carta }) {
     // --- ESTADOS PARA EL CHECKOUT ---
     const [modalPaso, setModalPaso] = useState(0);
     const [dni, setDni] = useState('');
-    const [direccion, setDireccion] = useState(''); // <-- NUEVO ESTADO
-    const [email, setEmail] = useState(''); // <-- NUEVO ESTADO
+    const [direccion, setDireccion] = useState('');
+    const [email, setEmail] = useState('');
     const [pedidoAntiguo, setPedidoAntiguo] = useState(null);
 
     const tabs = [
@@ -34,59 +35,80 @@ export default function Carta({ carta }) {
     const iniciarCheckout = () => {
         if (carrito.length === 0) return;
         setDni('');
-        setDireccion(''); // Limpiamos la dirección al abrir
+        setDireccion(''); 
+        setEmail(''); 
         setPedidoAntiguo(null);
         setModalPaso(1);
-        setEmail(''); // Limpiamos el correo al abrir
     };
 
     const verificarDatos = () => {
-        // Validamos el DNI
+        // Validaciones estrictas
         if (!dni || dni.length < 6) {
             alert("Por favor, ingresá un DNI válido.");
             return;
         }
-        // Validamos la dirección
         if (!direccion || direccion.trim().length < 4) {
             alert("Por favor, ingresá una dirección de envío válida.");
             return;
         }
-
-        if (!email || !isValidEmail(email)) {
+        // Validación de email integrada y a prueba de errores
+        if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
             alert("Por favor, ingresá un correo electrónico válido.");
             return;
         }
 
-        const baseDeDatos = JSON.parse(localStorage.getItem('pedidos_lapiazza')) || {};
+        try {
+            // Lectura segura del localStorage
+            let dbFalsa = localStorage.getItem('pedidos_lapiazza');
+            let baseDeDatos = dbFalsa ? JSON.parse(dbFalsa) : {};
 
-        if (baseDeDatos[dni]) {
-            setPedidoAntiguo(baseDeDatos[dni]);
-            setModalPaso(2); // Pasa a confirmación
-        } else {
-            guardarPedido(); // Cliente nuevo, guarda directo
+            // Evitamos que datos viejos corruptos rompan el sistema
+            if (typeof baseDeDatos !== 'object' || Array.isArray(baseDeDatos)) {
+                baseDeDatos = {};
+            }
+
+            if (baseDeDatos[dni]) {
+                setPedidoAntiguo(baseDeDatos[dni]);
+                setModalPaso(2); // Pasa a confirmación
+            } else {
+                guardarPedido(); // Cliente nuevo, guarda directo
+            }
+        } catch (error) {
+            console.error("Error leyendo datos previos:", error);
+            guardarPedido(); // Ante la duda, guarda el pedido igual
         }
     };
 
     const guardarPedido = () => {
-        const baseDeDatos = JSON.parse(localStorage.getItem('pedidos_lapiazza')) || {};
+        try {
+            let dbFalsa = localStorage.getItem('pedidos_lapiazza');
+            let baseDeDatos = dbFalsa ? JSON.parse(dbFalsa) : {};
+            
+            if (typeof baseDeDatos !== 'object' || Array.isArray(baseDeDatos)) {
+                baseDeDatos = {};
+            }
 
-        // Guardamos el pedido incluyendo la dirección
-        baseDeDatos[dni] = {
-            items: carrito,
-            total: totalCarrito,
-            direccion: direccion,
-            email: email,
-            fecha: new Date().toLocaleString()
-        };
+            // Guardamos el nuevo pedido
+            baseDeDatos[dni] = {
+                items: carrito,
+                total: totalCarrito,
+                direccion: direccion,
+                email: email,
+                fecha: new Date().toLocaleString()
+            };
 
-        localStorage.setItem('pedidos_lapiazza', JSON.stringify(baseDeDatos));
+            localStorage.setItem('pedidos_lapiazza', JSON.stringify(baseDeDatos));
 
-        setCarrito([]);
-        setModalPaso(3);
+            setCarrito([]);
+            setModalPaso(3); // ÉXITO
 
-        setTimeout(() => {
-            setModalPaso(0);
-        }, 4000); // Le damos 4 segundos a la pantalla de éxito
+            setTimeout(() => {
+                setModalPaso(0); // Cierra el modal a los 4 segs
+            }, 4000);
+        } catch (error) {
+            console.error("Error al guardar:", error);
+            alert("Hubo un error guardando el pedido.");
+        }
     };
 
     if (!carta) return null;
@@ -177,7 +199,7 @@ export default function Carta({ carta }) {
                 <div className="modal-overlay">
                     <div className="modal-content">
 
-                        {/* PASO 1: PEDIR DNI Y DIRECCIÓN */}
+                        {/* PASO 1: PEDIR DATOS */}
                         {modalPaso === 1 && (
                             <>
                                 <h3>Confirmá tu pedido</h3>
@@ -186,16 +208,14 @@ export default function Carta({ carta }) {
                                 </p>
 
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '1.5rem' }}>
-                                    {/* INPUT DNI */}
                                     <input
                                         type="number"
                                         placeholder="DNI (Ej: 35123456)"
                                         value={dni}
                                         onChange={(e) => setDni(e.target.value)}
-                                        style={{ margin: 0 }} // Anula el margen global para usar el gap del flex
+                                        style={{ margin: 0 }}
                                         autoFocus
                                     />
-                                    {/* INPUT DIRECCIÓN */}
                                     <input
                                         type="text"
                                         placeholder="Dirección (Calle, Nº, Localidad)"
@@ -203,15 +223,13 @@ export default function Carta({ carta }) {
                                         onChange={(e) => setDireccion(e.target.value)}
                                         style={{ margin: 0 }}
                                     />
-
                                     <input
-                                        type="text"
+                                        type="email"
                                         placeholder="Email (Ej: email@ejemplo.com)"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                         style={{ margin: 0 }}
                                     />
-
                                 </div>
 
                                 <div className="modal-botones">

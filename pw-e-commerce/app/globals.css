@@ -418,7 +418,6 @@ footer em {
   color: var(--oscuro);
 }
 
-
 .imagen-flotante {
   position: absolute;
   top: 25%; /* Subimos la imagen (antes estaba al 50%) */
