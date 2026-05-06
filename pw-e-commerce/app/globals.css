@@ -446,8 +446,18 @@ footer em {
   right: -20px; /* Se acomoda un poquito hacia adentro al hacer hover */
 }
 
-.imagen-flotante img { width: 100%; height: 100%; object-fit: cover; }
+.textoAlt {
+  font-size: 0.8rem;
+  color: var(--gris);
+  margin-top: 100px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 
+.imagen-flotante img { width: 100%; height: 100%; object-fit: cover;
+}
 /* Carrito Sidebar */
 .carrito-sidebar {
   width: 320px;

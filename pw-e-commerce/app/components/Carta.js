@@ -1,5 +1,4 @@
 import { useState } from 'react';
-
 import '../globals.css';
 
 export default function Carta({ carta }) {
@@ -294,7 +293,7 @@ function MenuItem({ item, agregarAlCarrito, esPizza }) {
     const precioBase = Number(item.precio.replace(/[^0-9]/g, ''));
     const precioGrande = precioBase;
     const precioChica = Math.round(precioBase * 0.7);
-
+    const textoAlt = `${item.nombre}`;
     return (
         <div
             className="menu-item"
@@ -325,7 +324,8 @@ function MenuItem({ item, agregarAlCarrito, esPizza }) {
 
             {item.imagen && (
                 <div className="imagen-flotante">
-                    <img src={item.imagen} alt={item.nombre} />
+                    
+                    <img src={item.imagen} alt={textoAlt} />
                 </div>
             )}
         </div>
