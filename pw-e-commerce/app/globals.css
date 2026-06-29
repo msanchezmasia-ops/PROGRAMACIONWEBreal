@@ -689,3 +689,121 @@ footer em {
   opacity: 0.9; /* Un toquecito de transparencia para que no pelee con los textos */
   filter: drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.5)); /* Sombra suave para que resalte en el fondo oscuro */
 }
+
+
+/* =========================================
+   ESTILOS DE LOGIN Y REGISTRO
+   ========================================= */
+.login-container {
+    max-width: 450px;
+    margin: 8rem auto 4rem;
+    padding: 2.5rem;
+    background: var(--marron-oscuro);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    transition: all 0.3s ease;
+}
+
+.login-container.modo-registro {
+    border: 2px solid var(--dorado);
+}
+
+.login-container.modo-login {
+    border: 1px solid #444;
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.login-icono {
+    font-size: 3rem;
+}
+
+.login-titulo {
+    color: var(--dorado);
+    margin-top: 1rem;
+    font-size: 2rem;
+}
+
+.login-subtitulo {
+    color: var(--gris);
+    font-size: 0.9rem;
+}
+
+.alerta-error {
+    background: rgba(255, 77, 77, 0.1);
+    color: #ff4d4d;
+    padding: 0.8rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    font-size: 0.85rem;
+    border: 1px solid #ff4d4d;
+    text-align: center;
+}
+
+.alerta-exito {
+    background: rgba(77, 255, 136, 0.1);
+    color: #4dff88;
+    padding: 0.8rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    font-size: 0.85rem;
+    border: 1px solid #4dff88;
+    text-align: center;
+}
+
+.login-label {
+    display: block;
+    color: var(--crema);
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.login-input-group {
+    width: 100%;
+}
+
+.btn-login-submit {
+    margin-top: 1rem;
+    width: 100%;
+    padding: 1rem;
+    font-weight: bold;
+    font-size: 1rem;
+    border: 2px solid var(--dorado);
+    border-radius: 6px;
+    transition: all 0.3s;
+}
+
+.btn-login-submit.btn-primario {
+    background: var(--dorado);
+    color: #000;
+}
+
+.btn-login-submit.btn-secundario {
+    background: transparent;
+    color: var(--dorado);
+}
+
+.btn-login-submit:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.login-footer {
+    text-align: center;
+    margin-top: 2rem;
+    border-top: 1px solid #333;
+    padding-top: 1.5rem;
+}
+
+.btn-texto {
+    background: none;
+    border: none;
+    color: var(--dorado);
+    text-decoration: underline;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 0.5rem;
+}
