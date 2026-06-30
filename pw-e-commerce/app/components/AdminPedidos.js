@@ -9,6 +9,8 @@ export default function AdminPedidos() {
     const cargarPedidos = async () => {
         setCargando(true);
         try {
+            // Nota: Si en el futuro solo querés ver los pagados, deberías modificar 
+            // 'obtenerTodosLosPedidos' en adminService para que filtre .eq('pagado', true)
             setPedidos(await obtenerTodosLosPedidos());
         } catch (error) {
             console.error("Error al cargar pedidos:", error);
@@ -45,9 +47,25 @@ export default function AdminPedidos() {
                             </button>
                             <div className="pedido-header">
                                 <span>Pedido #{p.id}</span>
-                                <span>Total: ${Number(p.total).toLocaleString('es-AR')}</span>
+                                
+                                {/* 👇 ACÁ AGREGAMOS EL INDICADOR VISUAL DE PAGO 👇 */}
+                                <span style={{
+                                    backgroundColor: p.pagado ? '#4caf50' : '#f44336',
+                                    color: 'white',
+                                    padding: '4px 8px',
+                                    borderRadius: '12px',
+                                    fontSize: '0.85rem',
+                                    fontWeight: 'bold',
+                                    marginLeft: '10px'
+                                }}>
+                                    {p.pagado ? "✅ PAGADO" : "⏳ NO PAGADO"}
+                                </span>
+
+                                <span style={{ marginLeft: 'auto' }}>
+                                    Total: ${Number(p.total).toLocaleString('es-AR')}
+                                </span>
                             </div>
-                            <p className="pedido-info-linea"><strong>Cliente:</strong> {p.email} | <strong>DNI:</strong> {p.dni}</p>
+                            <p className="pedido-info-linea"><strong>Cliente:</strong> {p.email} | <strong>DNI:</strong> {p.dni || 'N/A'}</p>
                             <p className="pedido-info-linea"><strong>Destino:</strong> {p.direccion}</p>
                             <div className="pedido-items-box">
                                 <strong>Items comprados:</strong>
