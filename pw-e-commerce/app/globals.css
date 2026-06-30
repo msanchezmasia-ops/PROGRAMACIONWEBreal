@@ -807,3 +807,241 @@ footer em {
     cursor: pointer;
     margin-top: 0.5rem;
 }
+
+
+/* =======================================================
+   ESTILOS PARA EL PANEL DE ADMINISTRACIÓN
+   ======================================================= */
+
+.admin-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  min-height: 80vh;
+}
+
+.admin-titulo {
+  color: var(--dorado);
+  border-bottom: 2px solid var(--dorado);
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+}
+
+.admin-nav {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.admin-tab-btn {
+  background: transparent;
+  color: var(--crema);
+  border: 1px solid var(--dorado);
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  text-transform: capitalize;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.admin-tab-btn--activa {
+  background: var(--dorado);
+  color: var(--marron-oscuro);
+  font-weight: bold;
+}
+
+/* Pedidos */
+.pedido-card {
+  background: var(--marron-oscuro);
+  border: 1px solid var(--dorado);
+  border-radius: 8px;
+  padding: 1.5rem;
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.pedido-header {
+  display: flex;
+  justify-content: space-between;
+  color: var(--dorado);
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  width: 75%;
+}
+
+.pedido-items-box {
+  margin-top: 1rem;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+}
+
+/* Tablas (Reservas) */
+.admin-tabla {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--marron-oscuro);
+  margin-top: 1rem;
+}
+
+.admin-tabla th {
+  border-bottom: 2px solid var(--dorado);
+  color: var(--dorado);
+  text-align: left;
+  padding: 1rem;
+}
+
+.admin-tabla td {
+  padding: 1rem;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+/* Formularios CRUD */
+.admin-grid-crud {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 2rem;
+}
+
+.admin-formulario {
+  background: var(--marron-oscuro);
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--dorado);
+  height: fit-content;
+}
+
+.admin-form-titulo {
+  color: var(--dorado);
+  margin-bottom: 1.2rem;
+}
+
+.admin-input-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+/* Botones de acción */
+.btn-eliminar-peltro {
+  background: transparent;
+  border: 1px solid #ff4d4d;
+  color: #ff4d4d;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-eliminar-peltro:hover {
+  background: rgba(255, 77, 77, 0.1);
+}
+
+.btn-eliminar-posicion {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+}
+
+.btn-editar-peltro {
+  background: transparent;
+  border: 1px solid var(--dorado);
+  color: var(--dorado);
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-editar-peltro:hover {
+  background: rgba(212, 175, 55, 0.1);
+}
+
+/* Sub-lista derecha del CRUD */
+.admin-crud-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 0.8rem 1rem;
+  border-radius: 6px;
+  border-left: 3px solid var(--dorado);
+  margin-bottom: 0.5rem;
+}
+
+
+/* =======================================================
+   ESTILOS COMPLEMENTARIOS PARA EL PANEL DE ADMIN
+   ======================================================= */
+
+/* Textos generales */
+.admin-estado-texto {
+  color: var(--dorado);
+  font-weight: bold;
+}
+.admin-subtitulo {
+  color: var(--crema);
+  margin-bottom: 1.5rem;
+}
+.admin-texto-vacio {
+  color: var(--gris);
+  font-style: italic;
+}
+
+/* Tablas */
+.admin-tabla th.col-centro, 
+.admin-tabla td.col-centro {
+  text-align: center;
+}
+.admin-tabla td.col-fuerte {
+  font-weight: bold;
+}
+.admin-tabla td.col-gris {
+  color: var(--gris);
+}
+
+/* Textos de Pedidos */
+.pedido-info-linea {
+  margin: 0.3rem 0;
+}
+.pedido-lista-items {
+  padding-left: 1.2rem;
+  margin: 0.5rem 0 0 0;
+}
+.pedido-item-li {
+  color: var(--gris);
+}
+
+/* Textos de Productos (CRUD) */
+.producto-nombre {
+  color: var(--crema);
+}
+.producto-precio-info {
+  color: var(--dorado);
+  margin-left: 1rem;
+  font-size: 0.9rem;
+}
+.producto-categoria-tag {
+  font-size: 0.8rem;
+  color: var(--gris);
+  text-transform: uppercase;
+}
+
+/* Utilidades para botones e inputs */
+.admin-input-disabled {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--gris);
+  cursor: not-allowed;
+}
+
+.admin-btn-full {
+  width: 100%;
+  margin-top: 1rem;
+}
+.admin-btn-cancelar {
+  width: 100%;
+  margin-top: 0.5rem;
+  background: transparent;
+  border: 1px solid var(--gris);
+  color: var(--gris);
+}

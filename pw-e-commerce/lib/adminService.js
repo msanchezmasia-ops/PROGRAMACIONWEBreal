@@ -5,9 +5,18 @@ export const obtenerTodosLosPedidos = async () => {
     const { data, error } = await supabase
         .from('pedidos')
         .select('*')
-        .order('id', { ascending: false }); // Últimos pedidos primero
+        .order('id', { ascending: false });
     if (error) throw error;
     return data || [];
+};
+
+export const eliminarPedidoAdmin = async (id) => {
+    const { error } = await supabase
+        .from('pedidos')
+        .delete()
+        .eq('id', id);
+    if (error) throw error;
+    return true;
 };
 
 // 🗓️ RESERVAS
@@ -18,6 +27,15 @@ export const obtenerTodasLasReservas = async () => {
         .order('fecha', { ascending: true });
     if (error) throw error;
     return data || [];
+};
+
+export const eliminarReservaAdmin = async (id) => {
+    const { error } = await supabase
+        .from('reservas')
+        .delete()
+        .eq('id', id);
+    if (error) throw error;
+    return true;
 };
 
 // 🍕 PRODUCTOS (CRUD)
@@ -50,16 +68,6 @@ export const modificarProducto = async (id, cambios) => {
 export const eliminarProducto = async (id) => {
     const { error } = await supabase
         .from('productos')
-        .delete()
-        .eq('id', id);
-    if (error) throw error;
-    return true;
-};
-
-
-export const eliminarPedidoAdmin = async (id) => {
-    const { error } = await supabase
-        .from('pedidos')
         .delete()
         .eq('id', id);
     if (error) throw error;
