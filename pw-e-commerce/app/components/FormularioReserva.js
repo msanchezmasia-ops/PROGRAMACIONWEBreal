@@ -62,13 +62,13 @@ export default function FormularioReserva() {
         }
     };
 
-    if (verificandoAuth) return <p style={{ textAlign: 'center', padding: '4rem', color: 'var(--dorado)' }}>Cargando...</p>;
+    if (verificandoAuth) return <p className="estado-carga">Cargando...</p>;
 
     if (!usuario) {
         return (
-            <div style={{ textAlign: 'center', padding: '4rem 2rem', background: 'var(--marron-oscuro)', borderRadius: '12px', border: '1px dashed var(--dorado)' }}>
-                <h3 style={{ color: 'var(--crema)', marginBottom: '1rem' }}>🔒 Acceso para clientes</h3>
-                <p style={{ color: 'var(--gris)', marginBottom: '2rem' }}>Necesitamos que ingreses a tu cuenta para reservar.</p>
+            <div className="auth-requerida">
+                <h3>🔒 Acceso para clientes</h3>
+                <p>Necesitamos que ingreses a tu cuenta para reservar.</p>
                 <Link href="/login" className="btn-carta">Iniciar Sesión</Link>
             </div>
         );
@@ -76,17 +76,17 @@ export default function FormularioReserva() {
 
     if (enviado) {
         return (
-            <div className="reserva-exitosa" style={{ textAlign: 'center', padding: '2rem' }}>
-                <h3 style={{ color: 'var(--dorado)' }}>¡Reserva confirmada! 🍷</h3>
+            <div className="reserva-exitosa">
+                <h3>¡Reserva confirmada! 🍷</h3>
                 <p>Te esperamos el {fecha} a las {hora} hs.</p>
-                <button onClick={() => setEnviado(false)} className="btn-carta" style={{marginTop: '1.5rem'}}>Hacer otra</button>
+                <button onClick={() => setEnviado(false)} className="btn-carta reserva-btn">Hacer otra</button>
             </div>
         );
     }
 
     return (
         <form className="formulario-reserva" onSubmit={handleSubmit} autoComplete="off">
-            {errorServidor && <p style={{ color: '#ff4d4d', textAlign: 'center' }}>{errorServidor}</p>}
+            {errorServidor && <p className="error-servidor">{errorServidor}</p>}
 
             <div className="campo-grupo">
                 <label className="campo-label" htmlFor="res-nombre">Nombre</label>
@@ -95,15 +95,15 @@ export default function FormularioReserva() {
 
             <div className="campo-grupo">
                 <label className="campo-label">Email de confirmación</label>
-                <input type="email" disabled className="campo-input" value={email} style={{ opacity: 0.7 }} />
+                <input type="email" disabled className="campo-input" value={email}/>
             </div>
 
-            <div style={{ display: 'flex', gap: '1rem' }}>
-                <div className="campo-grupo" style={{ flex: 1 }}>
+            <div className="campo-fila">
+                <div className="campo-grupo">
                     <label className="campo-label">Día</label>
                     <input type="date" className="campo-input" min={fechaMinima} value={fecha} onChange={(e) => setFecha(e.target.value)} />
                 </div>
-                <div className="campo-grupo" style={{ flex: 1 }}>
+                <div className="campo-grupo">
                     <label className="campo-label">Horario</label>
                     <select className="campo-input" value={hora} onChange={(e) => setHora(e.target.value)}>
                         <option value="">Seleccionar</option>

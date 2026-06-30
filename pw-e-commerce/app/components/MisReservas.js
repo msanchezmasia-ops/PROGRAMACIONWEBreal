@@ -51,43 +51,35 @@ export default function MisReservas() {
     if (!usuario) return null; 
 
     return (
-        <div style={{ marginTop: '3rem', borderTop: '1px solid var(--dorado)', paddingTop: '2rem', gridColumn: '1 / -1' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                <h3 style={{ color: 'var(--crema)' }}>🗓️ Gestión de Mis Reservas</h3>
+        <div className="mis-reservas-wrap">
+            <div className="mis-reservas-header">
+                <h3>🗓️ Gestión de Mis Reservas</h3>
                 <button onClick={toggleReservas} className="btn-carta">
                     {mostrarReservas ? 'Ocultar' : 'Ver mis reservas'}
                 </button>
             </div>
 
             {mostrarReservas && (
-                <div style={{ background: 'rgba(0,0,0,0.4)', padding: '1.5rem', borderRadius: '8px' }}>
+                <div className="mis-reservas-panel">
                     {cargando ? (
-                        <p style={{ color: 'var(--dorado)' }}>Buscando reservas...</p>
+                        <p className="texto-cargando">Buscando reservas...</p>
                     ) : misReservas.length === 0 ? (
-                        <p style={{ color: 'var(--gris)' }}>No tenés ninguna reserva activa en este momento.</p>
+                        <p className="texto-vacio">No tenés ninguna reserva activa en este momento.</p>
                     ) : (
-                        <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                        <ul className="mis-reservas-lista">
                             {misReservas.map(res => (
-                                <li key={res.id} style={{ 
-                                    background: 'var(--marron-oscuro)', 
-                                    border: '1px solid var(--dorado)', 
-                                    borderRadius: '6px', 
-                                    padding: '1rem',
-                                    display: 'flex',
-                                    justifyContent: 'space-between',
-                                    alignItems: 'center'
-                                }}>
+                                <li key={res.id} className="reserva-item">
                                     <div>
-                                        <strong style={{ color: 'var(--crema)', display: 'block', marginBottom: '0.3rem' }}>
+                                        <strong className="reserva-item-fecha">
                                             {res.fecha} a las {res.hora} hs.
                                         </strong>
-                                        <span style={{ color: 'var(--gris)', fontSize: '0.9rem' }}>
+                                        <span className="reserva-item-detalle">
                                             Mesa para {res.personas} personas a nombre de {res.nombre}.
                                         </span>
                                     </div>
                                     <button 
                                         onClick={() => handleCancelar(res.id)}
-                                        style={{ background: 'transparent', border: '1px solid #ff4d4d', color: '#ff4d4d', padding: '0.4rem 0.8rem', borderRadius: '4px', cursor: 'pointer' }}
+                                        className="btn-eliminar-peltro"
                                     >
                                         Cancelar
                                     </button>

@@ -203,7 +203,7 @@ export default function Carta({ carta }) {
                     <h3>🛒 Tu Pedido</h3>
 
                     {carrito.length === 0 ? (
-                        <p>Tu carrito está vacío.</p>
+                        <p className="carrito-vacio">Tu carrito está vacío.</p>
                     ) : (
                         <>
                             <ul className="carrito-lista">
@@ -227,7 +227,7 @@ export default function Carta({ carta }) {
                             </div>
 
                             {verificandoAuth ? (
-                                <p>Verificando cuenta...</p>
+                                <p className="carrito-estado-auth">Verificando cuenta...</p>
                             ) : usuario ? (
                                 <button
                                     className="btn-carta w-full mt-4"
@@ -236,9 +236,9 @@ export default function Carta({ carta }) {
                                     Finalizar Pedido
                                 </button>
                             ) : (
-                                <div style={{ marginTop: '1.5rem', textAlign: 'center', padding: '1rem', background: 'rgba(0,0,0,0.3)', borderRadius: '8px', border: '1px dashed var(--dorado)' }}>
-                                    <p style={{ color: 'var(--gris)', fontSize: '0.9rem', marginBottom: '0.8rem' }}>🔒 Debés iniciar sesión para pedir</p>
-                                    <Link href="/login" className="btn-carta" style={{ display: 'block', fontSize: '0.9rem', padding: '0.5rem' }}>
+                                <div className="login-requerido-carrito">
+                                    <p>🔒 Debés iniciar sesión para pedir</p>
+                                    <Link href="/login" className="btn-carta">
                                         Iniciar Sesión
                                     </Link>
                                 </div>
@@ -255,17 +255,16 @@ export default function Carta({ carta }) {
                         {modalPaso === 1 && (
                             <>
                                 <h3>Confirmá tu pedido</h3>
-                                <p style={{ color: 'var(--gris)', marginBottom: '1.5rem' }}>
+                                <p>
                                     Ingresá tus datos para el envío.
                                 </p>
 
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '1.5rem' }}>
+                                <div className="modal-form-grupo">
                                     <input
                                         type="number"
                                         placeholder="DNI (Ej: 35123456)"
                                         value={dni}
                                         onChange={(e) => setDni(e.target.value)}
-                                        style={{ margin: 0 }}
                                         autoFocus
                                     />
                                     <input
@@ -273,13 +272,11 @@ export default function Carta({ carta }) {
                                         placeholder="Dirección (Calle, Nº, Localidad)"
                                         value={direccion}
                                         onChange={(e) => setDireccion(e.target.value)}
-                                        style={{ margin: 0 }}
                                     />
                                     <input
                                         type="email"
                                         disabled
                                         value={email}
-                                        style={{ margin: 0, opacity: 0.7, cursor: 'not-allowed' }}
                                     />
                                 </div>
 
@@ -294,8 +291,8 @@ export default function Carta({ carta }) {
 
                         {modalPaso === 3 && (
                             <>
-                                <h3 style={{ color: 'var(--dorado)' }}>🍕 ¡Pedido Confirmado!</h3>
-                                <p style={{ color: 'var(--gris)', marginTop: '1rem' }}>
+                                <h3>🍕 ¡Pedido Confirmado!</h3>
+                                <p className="modal-exito-texto">
                                     Tu pedido está marchando hacia <strong>{direccion}</strong>.<br />
                                     ¡Prepará la mesa que en un rato llega!
                                 </p>
@@ -310,8 +307,6 @@ export default function Carta({ carta }) {
 }
 
 function MenuItem({ item, agregarAlCarrito, esPizza }) {
-    const [hover, setHover] = useState(false);
-
     const precioBase = typeof item.precio === 'number' ? item.precio : Number(item.precio.replace(/[^0-9]/g, ''));
     const precioGrande = precioBase;
     const precioChica = Math.round(precioBase * 0.7);
