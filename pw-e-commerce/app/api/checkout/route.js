@@ -29,9 +29,9 @@ export async function POST(request) {
                 back_urls: {
                     // 💡 TIP: Acordate de cambiar 'tudominio.com' por tu dominio real cuando subas esto,
                     // o usar localhost:3000 si estás probando en tu compu.
-                    success: 'https://www.tudominio.com/carta?pago=exito',
-                    failure: 'https://www.tudominio.com/carta?pago=fallo',
-                    pending: 'https://www.tudominio.com/carta?pago=pendiente',
+                    success: 'https://lapiazza.vercel.app/carta?pago=exito',
+                    failure: 'https://lapiazza.vercel.app/carta?pago=fallo',
+                    pending: 'https://lapiazza.vercel.app/carta?pago=pendiente',
                 },
                 auto_return: 'approved', // Vuelve automáticamente si se aprueba
             }
