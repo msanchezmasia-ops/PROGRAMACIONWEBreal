@@ -18,7 +18,9 @@ export default function CartaPage() {
                 // Traemos TODOS los productos de la base de datos sin filtrar
                 const { data, error: supabaseError } = await supabase
                     .from('productos')
-                    .select('*');
+                    .select('*')
+                    .order('categoria', { ascending: true })
+                    .order('orden', { ascending: true });
 
                 if (supabaseError) throw supabaseError;
 
