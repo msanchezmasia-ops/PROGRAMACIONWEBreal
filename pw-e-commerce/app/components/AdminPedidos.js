@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from 'react';
 import { obtenerTodosLosPedidos, eliminarPedidoAdmin } from '../../lib/adminService';
+import { supabase } from '../../lib/supabase';
 
 export default function AdminPedidos() {
     const [pedidos, setPedidos] = useState([]);
@@ -23,11 +24,26 @@ export default function AdminPedidos() {
 
     const handleCompletar = async (id) => {
         if (!window.confirm(`¿Seguro que querés marcar el Pedido #${id} como ENTREGADO / COMPLETADO? (Esto lo borrará de la lista)`)) return;
+    
         try {
-            await eliminarPedidoAdmin(id);
-            cargarPedidos();
+            console.log(`Intentando borrar el pedido ID: ${id}...`);
+        
+            // Le pegamos directo a Supabase para ver qué responde
+            const { data, error } = await supabase
+                .from('pedidos')
+                .delete()
+                .eq('id', id);
+
+            if (error) {
+                throw error; // Si hay error, lo tiramos al catch
+            }
+
+            console.log("¡Borrado exitoso!");
+            cargarPedidos(); // Recargamos la lista
+        
         } catch (error) {
-            alert(error.message);
+            console.error("❌ Error devuelto por Supabase:", error);
+            alert(`Fallo al borrar en Supabase: ${error.message}`);
         }
     };
 
