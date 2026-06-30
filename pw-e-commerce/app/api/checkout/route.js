@@ -6,9 +6,9 @@ const client = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN 
 
 export async function POST(request) {
     try {
-        // Recibimos el carrito desde Carta.js
+        // Recibimos el carrito y el ID del pedido desde Carta.js
         const body = await request.json();
-        const { items } = body;
+        const { items, pedidoId } = body; // ✅ AHORA SÍ EXTRAEMOS EL pedidoId
 
         // Mapeamos los items al formato exacto que exige Mercado Pago
         const itemsParaMP = items.map(item => ({
@@ -19,14 +19,16 @@ export async function POST(request) {
             currency_id: 'ARS',
         }));
 
-        
         // Creamos la "Preferencia" de pago
         const preference = new Preference(client);
         const response = await preference.create({
             body: {
                 items: itemsParaMP,
-                external_reference: pedidoId,
+                // ✅ Lo pasamos a String por las dudas, ya que Mercado Pago a veces se pone quisquilloso con los UUID
+                external_reference: String(pedidoId), 
                 back_urls: {
+                    // 💡 TIP: Acordate de cambiar 'tudominio.com' por tu dominio real cuando subas esto,
+                    // o usar localhost:3000 si estás probando en tu compu.
                     success: 'https://www.tudominio.com/carta?pago=exito',
                     failure: 'https://www.tudominio.com/carta?pago=fallo',
                     pending: 'https://www.tudominio.com/carta?pago=pendiente',
