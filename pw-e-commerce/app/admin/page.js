@@ -2,8 +2,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import '../../app/globals.css';
-
-// Importamos los componentes modularizados
 import AdminPedidos from '../components/AdminPedidos';
 import AdminReservas from '../components/AdminReservas';
 import AdminProductos from '../components/AdminProductos';
@@ -13,7 +11,7 @@ export default function AdminPage() {
     const [cargandoAuth, setCargandoAuth] = useState(true);
     const [tabActiva, setTabActiva] = useState('pedidos');
 
-    // 🔒 Control de accesos seguro
+    //  Control de accesos seguro
     useEffect(() => {
         async function verificarAcceso() {
             try {

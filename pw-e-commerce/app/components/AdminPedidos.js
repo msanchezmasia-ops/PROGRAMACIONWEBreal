@@ -26,10 +26,8 @@ export default function AdminPedidos() {
         if (!window.confirm(`¿Seguro que querés marcar el Pedido #${id} como ENTREGADO / COMPLETADO? (Esto lo borrará de la lista)`)) return;
     
         try {
-            console.log(`Intentando borrar el pedido ID: ${id}...`);
-        
             // Le pegamos directo a Supabase para ver qué responde
-            const { data, error } = await supabase
+            const { error } = await supabase
                 .from('pedidos')
                 .delete()
                 .eq('id', id);
@@ -38,7 +36,6 @@ export default function AdminPedidos() {
                 throw error; // Si hay error, lo tiramos al catch
             }
 
-            console.log("¡Borrado exitoso!");
             cargarPedidos(); // Recargamos la lista
         
         } catch (error) {
@@ -57,7 +54,6 @@ export default function AdminPedidos() {
                     {pedidos.map(p => (
                         <article key={p.id} className="pedido-card">
                             
-                            {/* 👇 Botón cambiado a Completar y usando clases CSS puras 👇 */}
                             <button 
                                 onClick={() => handleCompletar(p.id)} 
                                 className="btn-completar-pedido btn-eliminar-posicion"
@@ -68,7 +64,6 @@ export default function AdminPedidos() {
                             <div className="pedido-header">
                                 <span>Pedido #{p.id}</span>
                                 
-                                {/* 👇 Etiquetas sin estilos en línea, usando clases CSS 👇 */}
                                 <span className={`badge-estado ${p.pagado ? 'badge-pagado' : 'badge-no-pagado'}`}>
                                     {p.pagado ? "✅ PAGADO" : "⏳ NO PAGADO"}
                                 </span>
@@ -77,7 +72,6 @@ export default function AdminPedidos() {
                                     Total: ${Number(p.total).toLocaleString('es-AR')}
                                 </span>
                             </div>
-                            
                             
                             <p className="pedido-info-linea">
                                 <strong>Cliente:</strong> {p.email} | <strong>Teléfono:</strong> {p.telefono || 'No registrado'}

@@ -27,7 +27,7 @@ export default function Nav() {
         || usuario?.email?.split('@')[0];
 
     return (
-        /* SEMÁNTICA: aria-label le dice al lector de pantalla qué es este nav */
+        
         <nav aria-label="Navegación principal">
             <div className="logo">
                 <Image 
@@ -40,7 +40,7 @@ export default function Nav() {
                 <span>La Piazza</span>
             </div>
             
-            {/* Clases limpias sin style inline */}
+            
             <ul className="nav-lista">
                 <li><Link href="/">Inicio</Link></li>
                 <li><Link href="/carta">Carta</Link></li>
@@ -51,7 +51,7 @@ export default function Nav() {
                         <span className="nav-saludo">
                             Hola, <strong>{nombreUsuario}</strong>
                         </span>
-                        {/* SEMÁNTICA: aria-label en botones de acción */}
+                        
                         <button 
                             onClick={handleCerrarSesion}
                             className="btn-salir"

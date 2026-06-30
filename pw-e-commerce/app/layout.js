@@ -1,7 +1,7 @@
 import "./globals.css";
-import Nav from "./components/Nav"; // Ajusta la ruta si es necesario
+import Nav from "./components/Nav"; 
 
-// Definimos un Footer sencillo aquí o en un archivo aparte
+
 function Footer() {
   return (
     <footer>
@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="es">
       <body>
-        {/* Al ponerlo aquí, Nav se verá en TODAS las páginas */}
+        {/*  Nav se verá en TODAS las páginas */}
         <Nav />
         
         {/* 'children' representa el contenido de cada página específica */}

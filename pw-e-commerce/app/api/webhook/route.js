@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { MercadoPagoConfig, Payment } from 'mercadopago';
-import { createClient } from '@supabase/supabase-js'; // <-- Faltaba esta importación
-
+import { createClient } from '@supabase/supabase-js'; 
 // 1. Inicializamos el cliente de Mercado Pago con tu Access Token de producción
 const client = new MercadoPagoConfig({ 
     accessToken: process.env.MP_ACCESS_TOKEN 
@@ -25,7 +24,7 @@ export async function POST(request) {
             const paymentId = body.data.id;
 
             // Por seguridad, consultamos el estado real directo a la API de Mercado Pago.
-            // Nunca confíes ciegamente en lo que viene en el cuerpo (body) del webhook, podría ser falso.
+            
             const payment = new Payment(client);
             const pagoInfo = await payment.get({ id: paymentId });
 
@@ -34,7 +33,7 @@ export async function POST(request) {
             // Si el pago fue aprobado, procedemos a impactar en la base de datos
             if (pagoInfo.status === 'approved') {
                 // 'external_reference' es el ID de tu pedido. 
-                // Debiste haberlo enviado desde tu frontend/backend al crear la preferencia de pago en MP.
+                
                 const pedidoId = pagoInfo.external_reference;
 
                 if (!pedidoId) {
@@ -43,8 +42,8 @@ export async function POST(request) {
                     // Actualizamos la tabla 'pedidos' marcando 'pagado' como true
                     const { error } = await supabaseAdmin
                         .from('pedidos')
-                        .update({ pagado: true }) // Asegúrate de que la columna se llame exactamente 'pagado'
-                        .eq('id', pedidoId);   // Asegúrate de que tu columna identificadora se llame 'id'
+                        .update({ pagado: true }) 
+                        .eq('id', pedidoId);   
 
                     if (error) {
                         console.error(`❌ Error al actualizar el pedido ${pedidoId} en Supabase:`, error);
@@ -55,9 +54,7 @@ export async function POST(request) {
             }
         }
 
-        // SIEMPRE hay que devolver un estado 200 OK rápido a Mercado Pago.
-        // Si tardás mucho o devolvés un error (4xx o 5xx), Mercado Pago asumirá que no lo recibiste
-        // y te va a mandar el mismo webhook decenas de veces, saturando tu servidor.
+        
         return NextResponse.json({ received: true }, { status: 200 });
 
     } catch (error) {

@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from 'react';
 import Hero from './components/Hero';
-import { supabase } from '../lib/supabase'; // Conexión oficial a tu base de datos
+import { supabase } from '../lib/supabase'; 
 
 export default function HomePage() {
     const [pizzas, setPizzas] = useState([]);
@@ -12,13 +12,13 @@ export default function HomePage() {
         const cargarPizzasDesdeSupabase = async () => {
             try {
                 // Hacemos la consulta a Supabase: seleccionamos todo (*) de la tabla 'productos'
-                // pero filtramos para que traiga solo las que tengan 'destacada' igual a true
+                // menos las que tengan 'destacada' igual a true
                 const { data, error: supabaseError } = await supabase
                     .from('productos')
                     .select('*')
                     .eq('destacada', true);
 
-                // Si Supabase nos devuelve un error, lo lanzamos para que lo maneje el catch
+                
                 if (supabaseError) throw supabaseError;
                 
                 // Si todo salió bien, guardamos las pizzas en el estado

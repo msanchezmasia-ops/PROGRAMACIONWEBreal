@@ -1,6 +1,6 @@
 "use client";
 import FormularioReserva from './FormularioReserva';
-import MisReservas from './MisReservas'; // Importamos el nuevo componente
+import MisReservas from './MisReservas'; 
 import '../globals.css';
 
 export default function Contacto({ contacto }) {
@@ -38,7 +38,7 @@ export default function Contacto({ contacto }) {
                         <DatoContacto icono="📷" etiqueta="Instagram" valor={contacto.instagram} />
                     </div>
 
-                    {/* ACA INSERTAMOS LA LISTA DE RESERVAS */}
+                    
                     <MisReservas />
 
                 </div>

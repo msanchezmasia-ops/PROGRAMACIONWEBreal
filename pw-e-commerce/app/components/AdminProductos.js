@@ -13,7 +13,7 @@ export default function AdminProductos() {
     const [formPrecio, setFormPrecio] = useState('');
     const [formCategoria, setFormCategoria] = useState('pizzas');
     const [formImagen, setFormImagen] = useState('');
-    const [formOrden, setFormOrden] = useState(''); // ✨ Nuevo estado para el orden manual
+    const [formOrden, setFormOrden] = useState(''); // estado para el orden manual
 
     const cargarProductos = async () => {
         setCargando(true);
@@ -43,7 +43,7 @@ export default function AdminProductos() {
             precio: formPrecio.toString(),
             categoria: formCategoria,
             imagen: formImagen || null,
-            orden: formOrden !== '' ? parseInt(formOrden) : null // ✨ Si está vacío viaja null
+            orden: formOrden !== '' ? parseInt(formOrden) : null // Si está vacío viaja null
         };
 
         try {
@@ -68,7 +68,7 @@ export default function AdminProductos() {
         setFormPrecio(prod.precio);
         setFormCategoria(prod.categoria);
         setFormImagen(prod.imagen || '');
-        setFormOrden(prod.orden !== null ? prod.orden.toString() : ''); // ✨ Carga el orden actual
+        setFormOrden(prod.orden !== null ? prod.orden.toString() : ''); // Carga el orden actual
     };
 
     const handleEliminar = async (id) => {
@@ -88,7 +88,7 @@ export default function AdminProductos() {
         setFormPrecio('');
         setFormCategoria('pizzas');
         setFormImagen('');
-        setFormOrden(''); // ✨ Limpia el input
+        setFormOrden(''); // Limpia el input
     };
 
     if (cargando) return <p className="admin-estado-texto">Cargando catálogo...</p>;
@@ -135,7 +135,7 @@ export default function AdminProductos() {
                     </div>
                 )}
 
-                {/* ✨ NUEVO INPUT DE ORDEN EN EL FORMULARIO */}
+                
                 <div className="campo-grupo">
                     <label className="campo-label">Posición en Menú <span className="col-gris">(Opcional / Vacío = Al final)</span></label>
                     <input type="number" min="1" className="campo-input" value={formOrden} onChange={(e) => setFormOrden(e.target.value)} placeholder="Ej: 3" />
@@ -162,7 +162,7 @@ export default function AdminProductos() {
                     {productos.map(p => (
                         <div key={p.id} className="admin-crud-item">
                             <div>
-                                {/* ✨ Mostramos el número de orden actual al lado del nombre */}
+                                
                                 <strong className="producto-nombre">#{p.orden || '-'} {p.nombre}</strong> 
                                 {p.categoria === 'pizzas' ? (
                                     <span className="producto-precio-info">

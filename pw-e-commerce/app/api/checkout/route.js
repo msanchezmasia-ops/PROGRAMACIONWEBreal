@@ -6,7 +6,7 @@ const client = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN 
 export async function POST(request) {
     try {
         const body = await request.json();
-        // ✅ SOLUCIÓN A: Agregamos pedidoId acá
+        //  Agregamos pedidoId por seguridad
         const { items, pedidoId } = body; 
 
         const itemsParaMP = items.map(item => ({
@@ -23,7 +23,7 @@ export async function POST(request) {
                 items: itemsParaMP,
                 external_reference: pedidoId ? pedidoId.toString() : '0',
                 back_urls: {
-                    // ✅ SOLUCIÓN B: Cambiamos tudominio por tu web real
+                    
                     success: 'https://lapiazza.vercel.app/carta?pago=exito',
                     failure: 'https://lapiazza.vercel.app/carta?pago=fallo',
                     pending: 'https://lapiazza.vercel.app/carta?pago=pendiente',

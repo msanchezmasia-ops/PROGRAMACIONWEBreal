@@ -62,7 +62,7 @@ export default function Carta({ carta }) {
         }
     }, [carrito, carritoCargado]);
 
-    // 👇 Corrección del Modal en Loop limpiando la URL con window.history 👇
+    
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const url = new URL(window.location.href);

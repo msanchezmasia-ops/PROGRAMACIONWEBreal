@@ -390,7 +390,7 @@ footer em {
   font-size: 1rem;
   line-height: 1.5;
   margin-bottom: 1.5rem;
-  max-width: 55%; /* Le damos más ancho ya que la imagen irá más a la derecha */
+  max-width: 55%; 
   
   /* Permitimos hasta 5 líneas antes de cortar */
   display: -webkit-box;
@@ -421,10 +421,10 @@ footer em {
 
 .imagen-flotante {
   position: absolute;
-  top: 25%; /* Subimos la imagen (antes estaba al 50%) */
-  right: -30px; /* La movemos hacia afuera a la derecha */
+  top: 25%; 
+  right: -30px; 
   
-  /* TAMAÑO MÁS GRANDE */
+  
   width: 210px; 
   height: 210px;
   
@@ -494,8 +494,8 @@ footer em {
 }
 
 /* ══════════════════════════════════════════════
-   7. SECCIÓN CONTACTO / RESERVA
-   ══════════════════════════════════════════════ */
+  7. SECCIÓN CONTACTO / RESERVA
+  ══════════════════════════════════════════════ */
 #contacto {
   padding: 2rem; max-width: 1200px; margin: 0 auto;
 }
@@ -549,15 +549,15 @@ footer em {
 /* --- FOTO DEL LOCAL EN CONTACTO --- */
 .foto-local-wrap {
   width: 100%;
-  height: 240px; /* Alto fijo para que se vea como un banner panorámico */
+  height: 240px; 
   border-radius: 12px;
   overflow: hidden;
   
   /* ESTO ES LO QUE BAJA EL TEXTO: */
   margin-bottom: 2rem; 
   
-  border: 1px solid rgba(255, 204, 0, 0.15); /* Borde dorado sutil */
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5); /* Sombra para dar profundidad */
+  border: 1px solid rgba(255, 204, 0, 0.15); 
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
 }
 
 .foto-local-wrap img {
@@ -572,8 +572,8 @@ footer em {
 }
 
 /* ============================================================
-   MODAL DE CHECKOUT
-   ============================================================ */
+  MODAL DE CHECKOUT
+  ============================================================ */
 .modal-overlay {
   position: fixed;
   top: 0; left: 0; width: 100vw; height: 100vh;
@@ -636,7 +636,7 @@ footer em {
   background: rgba(255, 204, 0, 0.05);
 }
 
-/* Ocultar las flechitas de subir/bajar número en el input del DNI */
+
 .modal-content input::-webkit-outer-spin-button,
 .modal-content input::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -673,13 +673,13 @@ footer em {
 
 
 /* ══════════════════════════════════════════════ 
-   SEPARADOR DE LA CARTA 
+  SEPARADOR DE LA CARTA 
 ══════════════════════════════════════════════ */
 .separador-carta {
   display: flex;
   justify-content: center; /* Centra el logo horizontalmente */
   align-items: center;
-  margin: 3rem 0; /* Da un lindo espacio arriba y abajo */
+  margin: 3rem 0; 
   width: 100%;
 }
 
@@ -687,14 +687,14 @@ footer em {
   width: 12px; /* Tamaño del logo en el centro de la pantalla */
   height: auto;
   object-fit: contain;
-  opacity: 0.9; /* Un toquecito de transparencia para que no pelee con los textos */
-  filter: drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.5)); /* Sombra suave para que resalte en el fondo oscuro */
+  opacity: 0.9; 
+  filter: drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.5)); 
 }
 
 
 /* =========================================
-   ESTILOS DE LOGIN Y REGISTRO
-   ========================================= */
+  ESTILOS DE LOGIN Y REGISTRO
+  ========================================= */
 .login-container {
     max-width: 450px;
     margin: 8rem auto 4rem;
@@ -832,7 +832,7 @@ footer em {
 }
 
 /* Responsive: en pantallas táctiles no hay "hover" real, así que evitamos
-   que el efecto de elevación quede pegado al tocar */
+  que el efecto de elevación quede pegado al tocar */
 @media (hover: none) {
     .btn-login-submit.btn-primario:hover:not(:disabled),
     .btn-login-submit.btn-secundario:hover:not(:disabled) {
@@ -850,8 +850,8 @@ footer em {
 
 
 /* =======================================================
-   ESTILOS PARA EL PANEL DE ADMINISTRACIÓN
-   ======================================================= */
+  ESTILOS PARA EL PANEL DE ADMINISTRACIÓN
+  ======================================================= */
 
 .admin-container {
   max-width: 1200px;
@@ -1011,8 +1011,8 @@ footer em {
 
 
 /* =======================================================
-   ESTILOS COMPLEMENTARIOS PARA EL PANEL DE ADMIN
-   ======================================================= */
+  ESTILOS COMPLEMENTARIOS PARA EL PANEL DE ADMIN
+  ======================================================= */
 
 /* Textos generales */
 .admin-estado-texto {
@@ -1088,8 +1088,8 @@ footer em {
 
 
 /* =======================================================
-   ESTILOS PARA LA BARRA DE NAVEGACIÓN (NAV)
-   ======================================================= */
+  ESTILOS PARA LA BARRA DE NAVEGACIÓN (NAV)
+  ======================================================= */
 .nav-lista {
     display: flex;
     align-items: center;
@@ -1152,11 +1152,10 @@ footer em {
 }
 
 /* =======================================================
-   9. CLASES PARA REEMPLAZAR STYLE INLINE
-   (FormularioReserva.js, Carta.js, MisReservas.js)
-   ======================================================= */
+  9. CLASES PARA (FormularioReserva.js, Carta.js, MisReservas.js)
+  ======================================================= */
 
-/* --- Clases CSS que faltaban (estaban en el JSX pero no existían) --- */
+/* --- Clases CSS que faltaban  --- */
 .campo-input--error {
     border-color: #ff4d4d;
 }
@@ -1244,7 +1243,7 @@ footer em {
     margin-top: 1.5rem;
 }
 
-/* --- Carta.js (carrito y modal de checkout) --- */
+/* --- Carta.js  --- */
 .carrito-vacio {
     color: var(--gris);
 }
@@ -1423,7 +1422,7 @@ footer em {
     padding-right: 5px; /* Para que la barra de scroll no quede pegada al texto */
 }
 
-/* Estilo para la barra de scroll del historial (opcional, para que se vea más prolija) */
+/* Estilo para la barra de scroll del historial  */
 .historial-contenedor::-webkit-scrollbar {
     width: 6px;
 }
@@ -1524,7 +1523,7 @@ footer em {
     text-align: left;
 }
 
-/* --- MODAL ESPECÍFICO DE ERROR DE SISTEMA (PASO 5) --- */
+/* --- MODAL ESPECÍFICO DE ERROR DE SISTEMA  --- */
 .modal-error-cuerpo {
     font-size: 15px;
     color: #333333;
@@ -1549,8 +1548,8 @@ footer em {
 
 
 /* =========================================
-   ESTILOS PARA EL PANEL DE ADMIN (AdminPedidos)
-   ========================================= */
+  ESTILOS PARA EL PANEL DE ADMIN (AdminPedidos)
+  ========================================= */
 
 .btn-completar-pedido {
     background-color: #4caf50;
@@ -1567,7 +1566,7 @@ footer em {
     background-color: #45a049;
 }
 
-/* Clases combinadas para la etiqueta de pago */
+
 .badge-estado {
     color: white;
     padding: 4px 8px;

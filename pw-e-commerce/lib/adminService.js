@@ -1,6 +1,6 @@
 import { supabase } from './supabase';
 
-// 📦 PEDIDOS
+// PEDIDOS
 export const obtenerTodosLosPedidos = async () => {
     const { data, error } = await supabase
         .from('pedidos')
@@ -20,7 +20,7 @@ export const eliminarPedidoAdmin = async (id) => {
     return true;
 };
 
-// 🗓️ RESERVAS
+// RESERVAS
 export const obtenerTodasLasReservas = async () => {
     const { data, error } = await supabase
         .from('reservas')
@@ -39,7 +39,7 @@ export const eliminarReservaAdmin = async (id) => {
     return true;
 };
 
-// 🍕 PRODUCTOS (CRUD)
+// PRODUCTOS (CRUD)
 export const obtenerProductosAdmin = async () => {
     const { data, error } = await supabase
         .from('productos')

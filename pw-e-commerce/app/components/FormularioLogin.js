@@ -3,8 +3,8 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { supabase } from '../../lib/supabase'; // Ajustá la ruta hacia tu cliente de Supabase
-import '../globals.css'; // Ajustá la ruta hacia tus estilos globales
+import { supabase } from '../../lib/supabase'; 
+import '../globals.css'; 
 
 export default function FormularioLogin() {
     // --- ESTADOS DEL FORMULARIO ---
@@ -33,7 +33,7 @@ export default function FormularioLogin() {
         const confirmPasswordLimpia = confirmPassword.trim();
         const nombreLimpio = nombre.trim();
 
-        // 2. VALIDACIÓN DE FORMATO DE EMAIL (Regex básico)
+        // 2. VALIDACIÓN DE FORMATO DE EMAIL 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(emailLimpio)) {
             setError("Por favor, ingresá un formato de email válido (ej: tu@email.com).");
@@ -116,7 +116,7 @@ export default function FormularioLogin() {
         setConfirmPassword('');
     };
 
-    // --- RENDERIZADO DEL HTML (JSX) ---
+    // --- RENDERIZADO DEL HTML  ---
     return (
         <section className={`login-container ${esRegistro ? 'modo-registro' : 'modo-login'}`}>
             

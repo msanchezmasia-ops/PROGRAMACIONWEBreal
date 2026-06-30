@@ -1,13 +1,13 @@
 "use client";
 import { useState, useEffect } from 'react';
-import Carta from '../components/Carta'; // Ajustá los ../ según tu estructura
-import { supabase } from '../../lib/supabase'; // O '../../lib/supabase'
+import Carta from '../components/Carta'; 
+import { supabase } from '../../lib/supabase'; 
 
 export default function CartaPage() {
     const [carta, setCarta] = useState(null);
     const [error, setError] = useState(false);
     
-    // Truco anti-hidratación (igual que en el Inicio)
+    
     const [montado, setMontado] = useState(false);
 
     useEffect(() => {
@@ -24,7 +24,7 @@ export default function CartaPage() {
 
                 if (supabaseError) throw supabaseError;
 
-                // Reconstruimos el formato exacto que espera tu componente Carta
+                // Reconstruimos el formato exacto
                 const cartaAgrupada = {
                     pizzas: data.filter(item => item.categoria === 'pizzas'),
                     aperitivos: data.filter(item => item.categoria === 'aperitivos'),
