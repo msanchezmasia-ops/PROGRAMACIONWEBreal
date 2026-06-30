@@ -1,37 +1,46 @@
 import { NextResponse } from 'next/server';
 import { MercadoPagoConfig, Payment } from 'mercadopago';
+import { createClient } from '@supabase/supabase-js';
 
-
-// Configuramos el cliente con tu Access Token
 const client = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN });
+
+// Cliente con SERVICE ROLE: este endpoint corre en tu servidor, no en el navegador
+// del usuario, así que puede saltarse RLS de forma controlada para hacer este único update.
+const supabaseAdmin = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_ROLE_KEY // ⚠️ nunca expongas esta key en el frontend
+);
 
 export async function POST(request) {
     try {
-        // Mercado Pago nos manda un JSON con los datos del evento
         const body = await request.json();
-        
-        // Solo nos interesan los eventos de tipo "payment" (pagos)
-        if (body.type === 'payment') {
-            const paymentId = body.data.id;
-            
-            // Vamos a preguntarle a Mercado Pago el estado real de este pago por seguridad
-            const payment = new Payment(client);
-            const infoPago = await payment.get({ id: paymentId });
-            
-            if (infoPago.status === 'approved') {
-                console.log("✅ ¡PAGO APROBADO 100% REAL! ID de pago:", paymentId);
-                
-                // 💡 ACÁ EN EL FUTURO PODÉS AVISARLE A SUPABASE:
-                // await supabase.from('pedidos').update({ estado_pago: 'pagado' }).eq('id_pago', paymentId);
-            }
-        }
-        
-        // SIEMPRE hay que devolverle un estado 200 (OK) rápido a Mercado Pago 
-        // para que sepa que recibimos el mensaje y no lo vuelva a mandar.
-        return NextResponse.json({ success: true }, { status: 200 });
 
+        // Mercado Pago manda distintos tipos de eventos; solo nos interesan los de pago
+        if (body.type !== 'payment') {
+            return NextResponse.json({ received: true });
+        }
+
+        const paymentId = body.data.id;
+
+        // Volvemos a consultar el pago directo a la API de MP (nunca confíes
+        // en el contenido del webhook por sí solo, podría ser falsificado)
+        const payment = new Payment(client);
+        const pagoInfo = await payment.get({ id: paymentId });
+
+        if (pagoInfo.status === 'approved') {
+            const pedidoId = pagoInfo.external_reference;
+
+            const { error } = await supabaseAdmin
+                .from('pedidos')
+                .update({ pagado: true })
+                .eq('id', pedidoId);
+
+            if (error) console.error("Error marcando pedido como pagado:", error);
+        }
+
+        return NextResponse.json({ received: true });
     } catch (error) {
-        console.error("❌ Error procesando el webhook:", error);
+        console.error("Error en webhook de Mercado Pago:", error);
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }

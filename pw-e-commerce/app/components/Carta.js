@@ -16,12 +16,19 @@ export default function Carta({ carta }) {
     const [usuario, setUsuario] = useState(null);
     const [verificandoAuth, setVerificandoAuth] = useState(true);
 
-    // --- ESTADOS PARA EL CHECKOUT ---
-    const [modalPaso, setModalPaso] = useState(0);
-    const [dni, setDni] = useState('');
+    // --- ESTADOS PARA EL CHECKOUT Y DATOS ---
+    const [modalPaso, setModalPaso] = useState(0); 
+    const [telefono, setTelefono] = useState(''); 
     const [direccion, setDireccion] = useState('');
     const [email, setEmail] = useState('');
     const [procesando, setProcesando] = useState(false);
+
+    // --- ESTADO PARA MENSAJES DE ERROR INTERNOS ---
+    const [errorModal, setErrorModal] = useState(null);
+
+    // --- ESTADOS PARA EL HISTORIAL DE PEDIDOS ---
+    const [historialPedidos, setHistorialPedidos] = useState([]);
+    const [cargandoHistorial, setCargandoHistorial] = useState(false);
 
     const tabs = [
         { key: 'pizzas', label: 'Pizzas' },
@@ -29,7 +36,6 @@ export default function Carta({ carta }) {
         { key: 'postres', label: 'Postres' },
     ];
 
-    // 1. Chequear sesión del usuario
     useEffect(() => {
         supabase.auth.getSession().then(({ data: { session } }) => {
             if (session?.user) {
@@ -40,7 +46,6 @@ export default function Carta({ carta }) {
         });
     }, []);
 
-    // 2. RECUPERAR EL CARRITO GUARDADO
     useEffect(() => {
         const carritoGuardado = sessionStorage.getItem('carritoLaPiazza');
         if (carritoGuardado) {
@@ -49,40 +54,31 @@ export default function Carta({ carta }) {
         setCarritoCargado(true);
     }, []);
 
-    // 3. GUARDAR EL CARRITO
     useEffect(() => {
         if (carritoCargado) {
             sessionStorage.setItem('carritoLaPiazza', JSON.stringify(carrito));
         }
     }, [carrito, carritoCargado]);
 
-    // 🚀 4. ESCUCHAR RETORNO DE MERCADO PAGO
     useEffect(() => {
-        // Buscamos si existen los parámetros ?pago=exito o ?pago=fallo en la URL
         const params = new URLSearchParams(window.location.search);
         const estadoPago = params.get('pago');
 
         if (estadoPago === 'exito') {
-            setModalPaso(3); // Abrimos el modal de Pedido Confirmado
-            
-            // Limpiamos el carrito por las dudas si quedaba algo en sessionStorage
+            setModalPaso(3); 
             setCarrito([]);
             sessionStorage.removeItem('carritoLaPiazza');
-
-            // Limpiamos los parámetros de la URL para que si el usuario refresca la página no salte el modal de nuevo
             window.history.replaceState({}, document.title, window.location.pathname);
         } else if (estadoPago === 'fallo') {
-            alert("❌ El pago fue rechazado o cancelado. Por favor, intentalo de nuevo.");
+            setErrorModal("El pago fue rechazado o cancelado. Por favor, intentalo de nuevo.");
+            setModalPaso(5); // Paso 5: Modal de error personalizado
             window.history.replaceState({}, document.title, window.location.pathname);
         }
     }, []);
 
-
-    // --- LÓGICA DE CARRITO AGRUPADO ---
     const agregarAlCarrito = (item, tamaño, precio) => {
         setCarrito(prev => {
             const index = prev.findIndex(p => p.id === item.id && p.tamaño === tamaño);
-            
             if (index !== -1) {
                 const nuevoCarrito = [...prev];
                 nuevoCarrito[index] = { 
@@ -115,21 +111,31 @@ export default function Carta({ carta }) {
         });
     };
 
+    const vaciarCarrito = () => {
+        // Usamos un modal de error/confirmación controlado en vez de confirm() nativo si querés, 
+        // pero para no sobrecargar de estados, limpiamos directamente o manejamos la acción de forma segura.
+        setCarrito([]);
+        sessionStorage.removeItem('carritoLaPiazza');
+    };
+
     const totalCarrito = carrito.reduce((total, producto) => total + (producto.precio * producto.cantidad), 0);
 
-    // --- LÓGICA DE CHECKOUT ---
     const iniciarCheckout = () => {
         if (carrito.length === 0) return;
+        setErrorModal(null);
         setModalPaso(1);
     };
 
     const verificarDatos = async () => {
-        if (!dni || dni.length < 6) {
-            alert("Por favor, ingresá un DNI válido.");
+        setErrorModal(null);
+        const telefonoRegex = /^[0-9]{8,15}$/;
+        
+        if (!telefono || !telefonoRegex.test(telefono)) {
+            setErrorModal("Por favor, ingresá un número de teléfono válido (solo números, entre 8 y 15 dígitos).");
             return;
         }
         if (!direccion || direccion.trim().length < 4) {
-            alert("Por favor, ingresá una dirección de envío válida.");
+            setErrorModal("Por favor, ingresá una dirección de envío válida.");
             return;
         }
         await guardarPedido();
@@ -145,8 +151,8 @@ export default function Carta({ carta }) {
                 cantidad: prod.cantidad
             }));
 
-            const { error } = await supabase.rpc('crear_pedido_seguro', {
-                p_dni: dni,
+            const { data: pedidoId, error } = await supabase.rpc('crear_pedido_seguro', {
+                p_telefono: telefono, 
                 p_direccion: direccion,
                 p_email: email,
                 p_items: payloadItems
@@ -156,25 +162,43 @@ export default function Carta({ carta }) {
 
             const mpResponse = await fetch('/api/checkout', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ items: carrito })
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ items: carrito, pedidoId }) // 👈 viaja el id
             });
 
             const mpData = await mpResponse.json();
 
             if (mpData.init_point) {
-                // Redirigimos a Mercado Pago
                 window.location.href = mpData.init_point;
             } else {
                 throw new Error(mpData.error || "Error al procesar el pago con Mercado Pago.");
             }
-
         } catch (error) {
             console.error("Error al procesar el pedido:", error);
-            alert("Detalle del error: " + error.message);
+            setErrorModal("No se pudo procesar el pedido: " + error.message);
             setProcesando(false);
+        }
+    };
+
+    const verHistorial = async () => {
+        setErrorModal(null);
+        setModalPaso(4);
+        setCargandoHistorial(true);
+        try {
+            const { data, error } = await supabase
+                .from('pedidos')
+                .select('*')
+                .eq('email', email)
+                .eq('pagado', true)
+                .order('created_at', { ascending: false });
+
+            if (error) throw error;
+            setHistorialPedidos(data || []);
+        } catch (err) {
+            console.error("Error al obtener historial:", err);
+            setErrorModal("Hubo un problema al cargar tus pedidos anteriores.");
+        } finally {
+            setCargandoHistorial(false);
         }
     };
 
@@ -187,7 +211,6 @@ export default function Carta({ carta }) {
             </div>
 
             <section id="carta" className="carta-con-carrito">
-
                 <div className="carta-principal">
                     <h2 className="seccion-titulo">Lo que sale del horno</h2>
                     <p className="seccion-sub">Pizzas · Aperitivos · Postres</p>
@@ -219,7 +242,14 @@ export default function Carta({ carta }) {
                 </div>
 
                 <div className="carrito-sidebar">
-                    <h3>🛒 Tu Pedido</h3>
+                    <div className="carrito-header">
+                        <h3>🛒 Tu Pedido</h3>
+                        {carrito.length > 0 && (
+                            <button onClick={vaciarCarrito} className="btn-texto btn-vaciar">
+                                Vaciar todo
+                            </button>
+                        )}
+                    </div>
 
                     {carrito.length === 0 ? (
                         <p className="carrito-vacio">Tu carrito está vacío.</p>
@@ -254,10 +284,7 @@ export default function Carta({ carta }) {
                             {verificandoAuth ? (
                                 <p className="carrito-estado-auth">Verificando cuenta...</p>
                             ) : usuario ? (
-                                <button
-                                    className="btn-carta w-full mt-4"
-                                    onClick={iniciarCheckout}
-                                >
+                                <button className="btn-carta w-full mt-4" onClick={iniciarCheckout}>
                                     Finalizar Pedido
                                 </button>
                             ) : (
@@ -270,36 +297,48 @@ export default function Carta({ carta }) {
                             )}
                         </>
                     )}
+                    
+                    {usuario && !verificandoAuth && (
+                        <button onClick={verHistorial} className="btn-historial-pedidos">
+                            📜 VER PEDIDOS ANTERIORES
+                        </button>
+                    )}
                 </div>
             </section>
 
             {modalPaso > 0 && (
                 <div className="modal-overlay">
-                    <div className="modal-content">
+                    <div className="modal-content fade-in">
 
+                        {/* Modal de Checkout */}
                         {modalPaso === 1 && (
                             <>
                                 <h3>Confirmá tu pedido</h3>
-                                <p>Ingresá tus datos para el envío.</p>
+                                <p className="modal-subtitulo-texto">Ingresá tus datos para el envío a domicilio.</p>
+
+                                {errorModal && <div className="modal-alerta-error fade-in">{errorModal}</div>}
 
                                 <div className="modal-form-grupo">
                                     <input
-                                        type="number"
-                                        placeholder="DNI (Ej: 35123456)"
-                                        value={dni}
-                                        onChange={(e) => setDni(e.target.value)}
+                                        type="tel"
+                                        placeholder="Teléfono (Ej: 1123456789)"
+                                        value={telefono}
+                                        onChange={(e) => setTelefono(e.target.value)}
                                         autoFocus
+                                        className="campo-input-modal"
                                     />
                                     <input
                                         type="text"
                                         placeholder="Dirección (Calle, Nº, Localidad)"
                                         value={direccion}
                                         onChange={(e) => setDireccion(e.target.value)}
+                                        className="campo-input-modal"
                                     />
                                     <input
                                         type="email"
                                         disabled
                                         value={email}
+                                        className="campo-input-modal campo-disabled"
                                     />
                                 </div>
 
@@ -312,6 +351,7 @@ export default function Carta({ carta }) {
                             </>
                         )}
 
+                        {/* Modal de Éxito de Pago */}
                         {modalPaso === 3 && (
                             <>
                                 <h3>🍕 ¡Pedido Confirmado y Pagado!</h3>
@@ -319,8 +359,52 @@ export default function Carta({ carta }) {
                                     Recibimos tu pago con éxito. Tu pedido ya se está preparando en la cocina de <strong>La Piazza</strong>.<br /><br />
                                     ¡Prepará la mesa que en un rato llega!
                                 </p>
-                                <div className="modal-botones">
+                                <div className="modal-botones text-center">
                                     <button className="btn-carta" onClick={() => setModalPaso(0)}>Entendido</button>
+                                </div>
+                            </>
+                        )}
+
+                        {/* Modal de Historial de Pedidos */}
+                        {modalPaso === 4 && (
+                            <>
+                                <h3>📜 Tus Pedidos Anteriores</h3>
+                                {errorModal && <div className="modal-alerta-error fade-in">{errorModal}</div>}
+                                
+                                <div className="historial-contenedor">
+                                    {cargandoHistorial ? (
+                                        <p className="texto-cargando">Buscando en el horno...</p>
+                                    ) : historialPedidos.length === 0 ? (
+                                        <p className="texto-vacio-historial">Todavía no realizaste ningún pedido con nosotros.</p>
+                                    ) : (
+                                        <ul className="historial-lista">
+                                            {historialPedidos.map((ped) => (
+                                                <li key={ped.id} className="historial-item">
+                                                    <div className="historial-item-meta">
+                                                        <strong>Fecha:</strong> {new Date(ped.created_at).toLocaleDateString('es-AR')}
+                                                    </div>
+                                                    <div><strong>Envío a:</strong> {ped.direccion}</div>
+                                                    <span className="historial-detalle">
+                                                        {Array.isArray(ped.items) ? ped.items.map(i => `${i.cantidad}x ${i.nombre}`).join(', ') : 'Detalle no disponible'}
+                                                    </span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    )}
+                                </div>
+                                <div className="modal-botones">
+                                    <button className="btn-carta w-full" onClick={() => setModalPaso(0)}>Cerrar Ventana</button>
+                                </div>
+                            </>
+                        )}
+
+                        {/* Modal de Errores Generales del Sistema (Reemplazo definitivo del alert) */}
+                        {modalPaso === 5 && (
+                            <>
+                                <h3>⚠️ Algo no salió bien</h3>
+                                <p className="modal-error-cuerpo">{errorModal}</p>
+                                <div className="modal-botones">
+                                    <button className="btn-carta w-full" onClick={() => setModalPaso(0)}>Volver a intentar</button>
                                 </div>
                             </>
                         )}

@@ -25,7 +25,7 @@ export async function POST(request) {
         const response = await preference.create({
             body: {
                 items: itemsParaMP,
-                // A dónde vuelve el usuario después de pagar
+                external_reference: pedidoId,
                 back_urls: {
                     success: 'https://www.tudominio.com/carta?pago=exito',
                     failure: 'https://www.tudominio.com/carta?pago=fallo',

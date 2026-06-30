@@ -27,14 +27,31 @@ export default function FormularioLogin() {
         setError(null);
         setMensaje(null);
 
-        // Validaciones previas en modo registro
+        // 1. LIMPIEZA DE DATOS (Trim) para evitar errores de espacios en blanco
+        const emailLimpio = email.trim();
+        const passwordLimpia = password.trim();
+        const confirmPasswordLimpia = confirmPassword.trim();
+        const nombreLimpio = nombre.trim();
+
+        // 2. VALIDACIÓN DE FORMATO DE EMAIL (Regex básico)
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(emailLimpio)) {
+            setError("Por favor, ingresá un formato de email válido (ej: tu@email.com).");
+            return;
+        }
+
+        // 3. VALIDACIONES ESPECÍFICAS DE REGISTRO
         if (esRegistro) {
-            if (password !== confirmPassword) {
+            if (!nombreLimpio) {
+                setError("Por favor, ingresá tu nombre.");
+                return;
+            }
+            if (passwordLimpia !== confirmPasswordLimpia) {
                 setError("Las contraseñas no coinciden.");
                 return;
             }
-            if (!nombre.trim()) {
-                setError("Por favor, ingresá tu nombre.");
+            if (passwordLimpia.length < 6) {
+                setError("La contraseña debe tener al menos 6 caracteres.");
                 return;
             }
         }
@@ -43,30 +60,51 @@ export default function FormularioLogin() {
 
         try {
             if (esRegistro) {
-                // Lógica de Registro en Supabase
-                const { error: signUpError } = await supabase.auth.signUp({
-                    email,
-                    password,
-                    options: { data: { full_name: nombre } }
+                // LÓGICA DE REGISTRO
+                const { data, error: signUpError } = await supabase.auth.signUp({
+                    email: emailLimpio,
+                    password: passwordLimpia,
+                    options: { data: { full_name: nombreLimpio } }
                 });
-                if (signUpError) throw signUpError;
+
+                if (signUpError) {
+                    throw signUpError;
+                }
                 
-                setMensaje('¡Cuenta creada! Ya podés iniciar sesión con tus datos.');
+                // Si devuelve data pero identities está vacío, el mail ya existía
+                if (data.user && data.user.identities && data.user.identities.length === 0) {
+                    throw new Error("Ya existe una cuenta con este email. Por favor, iniciá sesión.");
+                }
+                
+                setMensaje('¡Cuenta creada con éxito! Ya podés iniciar sesión con tus datos.');
                 setEsRegistro(false);
                 limpiarCampos();
+
             } else {
-                // Lógica de Inicio de Sesión en Supabase
+                // LÓGICA DE INICIO DE SESIÓN
                 const { error: signInError } = await supabase.auth.signInWithPassword({
-                    email,
-                    password,
+                    email: emailLimpio,
+                    password: passwordLimpia,
                 });
-                if (signInError) throw signInError;
+
+                if (signInError) {
+                    // Chequeo de límite de intentos (Seguridad)
+                    if (signInError.message.includes("rate limit") || signInError.status === 429) {
+                        throw new Error("Demasiados intentos. Por favor, esperá un minuto y volvé a intentar.");
+                    }
+                    
+                    // Chequeo estándar de credenciales inválidas
+                    if (signInError.message.includes("Invalid login credentials")) {
+                        throw new Error("Email o contraseña incorrectos.");
+                    }
+                    throw signInError;
+                }
                 
                 // Redirección al ingresar con éxito
                 router.push('/contacto'); 
             }
         } catch (err) {
-            setError(err.message === "Invalid login credentials" ? "Email o contraseña incorrectos." : err.message);
+            setError(err.message);
         } finally {
             setCargando(false);
         }
@@ -92,8 +130,9 @@ export default function FormularioLogin() {
                 </p>
             </div>
 
-            {error && <div className="alerta-error">{error}</div>}
-            {mensaje && <div className="alerta-exito">{mensaje}</div>}
+            {/* Los carteles ahora renderizan aquí con animaciones CSS fluidas */}
+            {error && <div className="alerta-error fade-in">{error}</div>}
+            {mensaje && <div className="alerta-exito fade-in">{mensaje}</div>}
 
             <form onSubmit={handleSubmit}>
                 

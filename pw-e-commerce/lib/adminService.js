@@ -5,7 +5,8 @@ export const obtenerTodosLosPedidos = async () => {
     const { data, error } = await supabase
         .from('pedidos')
         .select('*')
-        .order('id', { ascending: false });
+        .order('id', { ascending: false })
+        .eq('pagado', true);
     if (error) throw error;
     return data || [];
 };

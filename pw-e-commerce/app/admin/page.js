@@ -18,9 +18,11 @@ export default function AdminPage() {
         async function verificarAcceso() {
             try {
                 const { data: { session } } = await supabase.auth.getSession();
-                if (session?.user?.email && session.user.email.toLowerCase() === 'msanchezmasia@itba.edu.ar') {
-                    setIsAdmin(true);
+                if (session?.user) {
+                    const { data: esAdmin } = await supabase.rpc('soy_admin');
+                    if (esAdmin) setIsAdmin(true);
                 }
+
             } catch (error) {
                 console.error("Error en la autenticación del admin:", error);
             } finally {

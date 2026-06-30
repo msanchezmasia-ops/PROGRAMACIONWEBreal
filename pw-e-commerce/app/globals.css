@@ -1351,3 +1351,198 @@ footer em {
     color: var(--gris);
     font-size: 0.9rem;
 }
+
+/* --- COMPONENTE DE LOGEO: ALERTAS Y NOTIFICACIONES --- */
+
+.alerta-error {
+    background-color: #fdf2f2;
+    border-left: 4px solid #de3e3e;
+    color: #9b2c2c;
+    padding: 12px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    margin-bottom: 20px;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.alerta-exito {
+    background-color: #f2f9f2;
+    border-left: 4px solid #3ede7b;
+    color: #2c6e49;
+    padding: 12px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    margin-bottom: 20px;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+/* Animación para suavizar la aparición de los carteles */
+.fade-in {
+    animation: fadeInAnimation 0.3s ease-out forwards;
+}
+
+@keyframes fadeInAnimation {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- BOTÓN VACIAR CARRITO Y HEADER --- */
+.carrito-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-vaciar {
+    color: #de3e3e;
+    font-size: 0.9rem;
+    padding: 0;
+}
+.btn-vaciar:hover {
+    color: #b52b2b;
+}
+
+/* --- HISTORIAL DE PEDIDOS --- */
+.btn-historial {
+    margin-top: 1rem;
+}
+
+.historial-contenedor {
+    max-height: 300px;
+    overflow-y: auto;
+    text-align: left;
+    margin-bottom: 1.5rem;
+    padding-right: 5px; /* Para que la barra de scroll no quede pegada al texto */
+}
+
+/* Estilo para la barra de scroll del historial (opcional, para que se vea más prolija) */
+.historial-contenedor::-webkit-scrollbar {
+    width: 6px;
+}
+.historial-contenedor::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+    border-radius: 4px;
+}
+.historial-contenedor::-webkit-scrollbar-thumb {
+    background: #ccc; 
+    border-radius: 4px;
+}
+.historial-contenedor::-webkit-scrollbar-thumb:hover {
+    background: #aaa; 
+}
+
+.historial-lista {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.historial-item {
+    border-bottom: 1px solid #eee;
+    padding: 12px 0;
+}
+.historial-item:last-child {
+    border-bottom: none;
+}
+
+.historial-detalle {
+    display: block;
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 4px;
+    line-height: 1.4;
+}
+
+/* --- BOTÓN HISTORIAL DE PEDIDOS (SIDEBAR) --- */
+.btn-historial-pedidos {
+    width: 100%;
+    background-color: transparent;
+    color: #555555;
+    border: 1px solid #cccccc;
+    padding: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 16px;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-historial-pedidos:hover {
+    background-color: #fcfbf9;
+    color: #111111;
+    border-color: #111111;
+}
+
+/* --- ADAPTACIONES Y SUBTÍTULOS DEL MODAL --- */
+.modal-subtitulo-texto {
+    font-size: 14px;
+    color: #666666;
+    margin-bottom: 20px;
+}
+
+.campo-input-modal {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    margin-bottom: 12px;
+    background-color: #ffffff;
+}
+
+.campo-input-modal:focus {
+    border-color: #111111;
+    outline: none;
+}
+
+.campo-disabled {
+    background-color: #f5f5f5;
+    color: #999999;
+    cursor: not-allowed;
+}
+
+/* --- ALERTAS DE ERROR INTERNAS DEL MODAL --- */
+.modal-alerta-error {
+    background-color: #fdf2f2;
+    border-left: 4px solid #de3e3e;
+    color: #9b2c2c;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    margin-bottom: 16px;
+    font-weight: 500;
+    text-align: left;
+}
+
+/* --- MODAL ESPECÍFICO DE ERROR DE SISTEMA (PASO 5) --- */
+.modal-error-cuerpo {
+    font-size: 15px;
+    color: #333333;
+    line-height: 1.5;
+    margin: 20px 0;
+    text-align: center;
+}
+
+/* --- DETALLES INTERNOS DEL HISTORIAL --- */
+.texto-cargando, .texto-vacio-historial {
+    text-align: center;
+    color: #777777;
+    padding: 20px 0;
+    font-style: italic;
+}
+
+.historial-item-meta {
+    font-size: 12px;
+    color: #888888;
+    margin-bottom: 20px;
+}
