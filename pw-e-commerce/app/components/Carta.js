@@ -1,9 +1,11 @@
+"use client";
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { supabase } from '../../lib/supabase';
 import '../globals.css';
 
 export default function Carta({ carta }) {
+    const [hover, setHover] = useState(false);
     const [tabActiva, setTabActiva] = useState('pizzas');
     const [carrito, setCarrito] = useState([]);
     
@@ -114,12 +116,11 @@ export default function Carta({ carta }) {
         await guardarPedido();
     };
 
-    // 🔒 FUNCIÓN ACTUALIZADA: ENVÍO SEGURO VÍA RPC (Base de datos)
+    // 🔒 FUNCIÓN ACTUALIZADA: SUPABASE + MERCADO PAGO
     const guardarPedido = async () => {
         setProcesando(true);
         try {
-            // 1. Armamos el paquete SOLO con los IDs, nombres, tamaños y cantidades.
-            // Cero precios, tal como propusimos.
+            // 1. Guardamos el pedido en Supabase
             const payloadItems = carrito.map(prod => ({
                 id: prod.id,
                 nombre: prod.nombre,
@@ -127,34 +128,43 @@ export default function Carta({ carta }) {
                 cantidad: prod.cantidad
             }));
 
-            // 2. Llamamos a nuestra función de base de datos segura (crear_pedido_seguro)
-            const { data, error } = await supabase.rpc('crear_pedido_seguro', {
+            const { error } = await supabase.rpc('crear_pedido_seguro', {
                 p_dni: dni,
                 p_direccion: direccion,
                 p_email: email,
                 p_items: payloadItems
             });
 
-            if (error) {
-                throw new Error(error.message);
+            if (error) throw new Error(error.message);
+
+            // 2. Pedimos el link de pago a nuestra API de Mercado Pago
+            const mpResponse = await fetch('/api/checkout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ items: carrito })
+            });
+
+            const mpData = await mpResponse.json();
+
+            // 3. Verificamos si Mercado Pago nos devolvió el link (init_point)
+            if (mpData.init_point) {
+                // Vaciamos el carrito local porque la compra ya está en proceso
+                setCarrito([]);
+                sessionStorage.removeItem('carritoLaPiazza'); 
+                
+                // 🚀 ¡Redirigimos al cliente a la página segura de Mercado Pago!
+                window.location.href = mpData.init_point;
+            } else {
+                // AQUÍ ESTÁ EL CAMBIO CLAVE: Leer el error real del backend
+                throw new Error(mpData.error || "Error desconocido al procesar el pago con Mercado Pago.");
             }
-
-            // 3. Si todo salió bien, vaciamos el carrito y borramos la memoria temporal
-            setCarrito([]);
-            sessionStorage.removeItem('carritoLaPiazza'); 
-            
-            setModalPaso(3); 
-
-            setTimeout(() => {
-                setModalPaso(0); 
-                setDni('');
-                setDireccion(''); 
-            }, 4000);
 
         } catch (error) {
             console.error("Error al procesar el pedido:", error);
-            alert("Hubo un error al enviar el pedido a la cocina: " + error.message);
-        } finally {
+            // Mostrará el error real que frena el checkout
+            alert("Detalle del error: " + error.message);
             setProcesando(false);
         }
     };
@@ -215,7 +225,13 @@ export default function Carta({ carta }) {
                                         </div>
                                         <div className="carrito-item-precio">
                                             ${(prod.precio * prod.cantidad).toLocaleString('es-AR')}
-                                            <button className="btn-eliminar" onClick={() => eliminarDelCarrito(prod.id, prod.tamaño)}>✕</button>
+                                            <button 
+                                                className="btn-eliminar" 
+                                                onClick={() => eliminarDelCarrito(prod.id, prod.tamaño)}
+                                                aria-label={`Eliminar un ${prod.nombre} del carrito`}
+                                            >
+                                                ✕
+                                            </button>
                                         </div>
                                     </li>
                                 ))}
@@ -307,10 +323,12 @@ export default function Carta({ carta }) {
 }
 
 function MenuItem({ item, agregarAlCarrito, esPizza }) {
+    const [hover, setHover] = useState(false);
     const precioBase = typeof item.precio === 'number' ? item.precio : Number(item.precio.replace(/[^0-9]/g, ''));
     const precioGrande = precioBase;
     const precioChica = Math.round(precioBase * 0.7);
     const textoAlt = `${item.nombre}`;
+    
     return (
         <div
             className="menu-item"
@@ -324,15 +342,24 @@ function MenuItem({ item, agregarAlCarrito, esPizza }) {
                 <div className="botones-agregar">
                     {esPizza ? (
                         <>
-                            <button onClick={() => agregarAlCarrito(item, 'Chica', precioChica)}>
+                            <button 
+                                onClick={() => agregarAlCarrito(item, 'Chica', precioChica)}
+                                aria-label={`Agregar ${item.nombre} tamaño Chica al carrito`}
+                            >
                                 + Chica (${precioChica.toLocaleString('es-AR')})
                             </button>
-                            <button onClick={() => agregarAlCarrito(item, 'Grande', precioGrande)}>
+                            <button 
+                                onClick={() => agregarAlCarrito(item, 'Grande', precioGrande)}
+                                aria-label={`Agregar ${item.nombre} tamaño Grande al carrito`}
+                            >
                                 + Grande (${precioGrande.toLocaleString('es-AR')})
                             </button>
                         </>
                     ) : (
-                        <button onClick={() => agregarAlCarrito(item, 'Porción', precioBase)}>
+                        <button 
+                            onClick={() => agregarAlCarrito(item, 'Porción', precioBase)}
+                            aria-label={`Agregar ${item.nombre} al carrito`}
+                        >
                             + Agregar al carrito (${precioBase.toLocaleString('es-AR')})
                         </button>
                     )}
