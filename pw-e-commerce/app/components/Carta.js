@@ -93,6 +93,7 @@ export default function Carta({ carta }) {
         });
     };
 
+    // Calculamos el total para MOSTRAR en pantalla, pero NO se lo mandamos a la base de datos
     const totalCarrito = carrito.reduce((total, producto) => total + (producto.precio * producto.cantidad), 0);
 
     // --- LÓGICA DE CHECKOUT ---
@@ -113,24 +114,32 @@ export default function Carta({ carta }) {
         await guardarPedido();
     };
 
+    // 🔒 FUNCIÓN ACTUALIZADA: ENVÍO SEGURO VÍA RPC (Base de datos)
     const guardarPedido = async () => {
         setProcesando(true);
         try {
-            const { error } = await supabase
-                .from('pedidos')
-                .insert([
-                    {
-                        dni,
-                        direccion,
-                        email, 
-                        total: totalCarrito,
-                        items: carrito 
-                    }
-                ]);
+            // 1. Armamos el paquete SOLO con los IDs, nombres, tamaños y cantidades.
+            // Cero precios, tal como propusimos.
+            const payloadItems = carrito.map(prod => ({
+                id: prod.id,
+                nombre: prod.nombre,
+                tamaño: prod.tamaño,
+                cantidad: prod.cantidad
+            }));
 
-            if (error) throw error;
+            // 2. Llamamos a nuestra función de base de datos segura (crear_pedido_seguro)
+            const { data, error } = await supabase.rpc('crear_pedido_seguro', {
+                p_dni: dni,
+                p_direccion: direccion,
+                p_email: email,
+                p_items: payloadItems
+            });
 
-            // Vaciamos el carrito de React y también borramos la memoria temporal!
+            if (error) {
+                throw new Error(error.message);
+            }
+
+            // 3. Si todo salió bien, vaciamos el carrito y borramos la memoria temporal
             setCarrito([]);
             sessionStorage.removeItem('carritoLaPiazza'); 
             
@@ -143,7 +152,7 @@ export default function Carta({ carta }) {
             }, 4000);
 
         } catch (error) {
-            console.error("Error al guardar en Supabase:", error);
+            console.error("Error al procesar el pedido:", error);
             alert("Hubo un error al enviar el pedido a la cocina: " + error.message);
         } finally {
             setProcesando(false);
