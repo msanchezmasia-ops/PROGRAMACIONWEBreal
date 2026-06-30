@@ -37,13 +37,11 @@ export default function HomePage() {
     // Si falló la conexión con la base de datos, mostramos este cartel
     if (error) {
         return (
-            <div style={{ textAlign: 'center', padding: '10rem 1rem', color: 'var(--crema)' }}>
-                <h2>¡Uy! Ocurrió un problema 🍕</h2>
-                <p style={{ marginTop: '1rem', color: 'var(--gris)' }}>
-                    No pudimos cargar la información de la base de datos en este momento.<br/>
-                    Por favor, verificá que tus claves en el archivo .env.local estén bien configuradas.
-                </p>
-            </div>
+        <div className="estado-error">
+            <span aria-hidden="true">🍕</span>
+            <h2>¡Uy! Ocurrió un problema</h2>
+            <p>No pudimos cargar la información en este momento. Intentá nuevamente más tarde.</p>
+        </div>
         );
     }
 

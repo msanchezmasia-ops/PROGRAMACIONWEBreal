@@ -95,7 +95,7 @@ export default function FormularioLogin() {
             {error && <div className="alerta-error">{error}</div>}
             {mensaje && <div className="alerta-exito">{mensaje}</div>}
 
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
+            <form onSubmit={handleSubmit}>
                 
                 {esRegistro && (
                     <div className="fade-in login-input-group">
@@ -123,7 +123,7 @@ export default function FormularioLogin() {
                     />
                 </div>
 
-                <div style={{ display: 'flex', gap: '1rem' }}>
+                <div>
                     <div className="login-input-group">
                         <label className="login-label">Contraseña</label>
                         <input 

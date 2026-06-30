@@ -2,18 +2,16 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
-import { supabase } from '../../lib/supabase'; // Ajustá los ../ según tu carpeta
+import { supabase } from '../../lib/supabase';
 
 export default function Nav() {
     const [usuario, setUsuario] = useState(null);
 
     useEffect(() => {
-        // 1. Preguntamos si ya había alguien logueado al refrescar la página
         supabase.auth.getSession().then(({ data: { session } }) => {
             setUsuario(session?.user ?? null);
         });
 
-        // 2. Encendemos el radar en tiempo real (Login / Logout)
         const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
             setUsuario(session?.user ?? null);
         });
@@ -25,12 +23,12 @@ export default function Nav() {
         await supabase.auth.signOut();
     };
 
-    // Lógica para obtener un nombre amigable
     const nombreUsuario = usuario?.user_metadata?.full_name 
         || usuario?.email?.split('@')[0];
 
     return (
-        <nav>
+        /* SEMÁNTICA: aria-label le dice al lector de pantalla qué es este nav */
+        <nav aria-label="Navegación principal">
             <div className="logo">
                 <Image 
                     src="/img/logocompleto.png" 
@@ -42,49 +40,29 @@ export default function Nav() {
                 <span>La Piazza</span>
             </div>
             
-            <ul style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+            {/* Clases limpias sin style inline */}
+            <ul className="nav-lista">
                 <li><Link href="/">Inicio</Link></li>
                 <li><Link href="/carta">Carta</Link></li>
                 <li><Link href="/contacto">Reserva</Link></li>
                 
-                {/* BOTÓN DINÁMICO: Cambia según el estado del radar */}
                 {usuario ? (
-                    <li style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', marginLeft: '0.5rem' }}>
-                        <span style={{ fontSize: '0.85rem', color: 'var(--dorado)' }}>
+                    <li className="nav-item-usuario">
+                        <span className="nav-saludo">
                             Hola, <strong>{nombreUsuario}</strong>
                         </span>
+                        {/* SEMÁNTICA: aria-label en botones de acción */}
                         <button 
                             onClick={handleCerrarSesion}
-                            style={{ 
-                                background: 'transparent', 
-                                border: '1px solid #ff4d4d', 
-                                color: '#ff4d4d', 
-                                padding: '0.3rem 0.6rem', 
-                                borderRadius: '6px', 
-                                cursor: 'pointer', 
-                                fontSize: '0.75rem',
-                                transition: 'all 0.2s'
-                            }}
-                            onMouseOver={(e) => e.target.style.background = 'rgba(255, 77, 77, 0.1)'}
-                            onMouseOut={(e) => e.target.style.background = 'transparent'}
+                            className="btn-salir"
+                            aria-label="Cerrar sesión"
                         >
                             Salir
                         </button>
                     </li>
                 ) : (
                     <li>
-                        <Link 
-                            href="/login" 
-                            style={{ 
-                                background: 'var(--dorado)', 
-                                color: '#000', 
-                                padding: '0.45rem 0.9rem', 
-                                borderRadius: '6px', 
-                                fontWeight: 'bold',
-                                fontSize: '0.85rem',
-                                textDecoration: 'none'
-                            }}
-                        >
+                        <Link href="/login" className="btn-ingresar" aria-label="Ingresar a tu cuenta">
                             Ingresar
                         </Link>
                     </li>

@@ -203,7 +203,7 @@ export default function Carta({ carta }) {
                     <h3>🛒 Tu Pedido</h3>
 
                     {carrito.length === 0 ? (
-                        <p style={{ color: 'var(--gris)' }}>Tu carrito está vacío.</p>
+                        <p>Tu carrito está vacío.</p>
                     ) : (
                         <>
                             <ul className="carrito-lista">
@@ -227,11 +227,10 @@ export default function Carta({ carta }) {
                             </div>
 
                             {verificandoAuth ? (
-                                <p style={{ textAlign: 'center', marginTop: '1rem', color: 'var(--dorado)' }}>Verificando cuenta...</p>
+                                <p>Verificando cuenta...</p>
                             ) : usuario ? (
                                 <button
                                     className="btn-carta w-full mt-4"
-                                    style={{ width: '100%' }}
                                     onClick={iniciarCheckout}
                                 >
                                     Finalizar Pedido
