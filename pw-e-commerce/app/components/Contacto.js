@@ -1,5 +1,6 @@
-
+"use client";
 import FormularioReserva from './FormularioReserva';
+import MisReservas from './MisReservas'; // Importamos el nuevo componente
 import '../globals.css';
 
 export default function Contacto({ contacto }) {
@@ -12,14 +13,8 @@ export default function Contacto({ contacto }) {
             <section id="contacto">
                 <div className="contacto-inner contacto-inner--tres-col">                    
                     <div className="contacto-texto">
-                        
-                        
-
                         <h2>Vení a visitarnos</h2>
-                        <p>
-                            Estamos en el corazón del barrio, esperándote con el horno encendido
-                            y una buena botella de vino.
-                        </p>
+                        <p>Estamos en el corazón del barrio, esperándote con el horno encendido y una buena botella de vino.</p>
                         <div className="horarios">
                             <h3>Horarios de atención</h3>
                             {contacto.horarios.map((fila, i) => (
@@ -29,8 +24,8 @@ export default function Contacto({ contacto }) {
                     </div>
 
                     <FormularioReserva />
+                    
                     <div className="contacto-datos">
-                        
                         {contacto.imagenLocal && (
                             <div className="foto-local-wrap">
                                 <img src={contacto.imagenLocal} alt="Interior de La Piazza" />
@@ -43,13 +38,15 @@ export default function Contacto({ contacto }) {
                         <DatoContacto icono="📷" etiqueta="Instagram" valor={contacto.instagram} />
                     </div>
 
+                    {/* ACA INSERTAMOS LA LISTA DE RESERVAS */}
+                    <MisReservas />
+
                 </div>
             </section>
         </>
     );
 }
 
-// Dato de contacto: ícono + etiqueta + valor
 function DatoContacto({ icono, etiqueta, valor }) {
     return (
         <div className="dato">

@@ -1,5 +1,3 @@
-// src/app/contacto/page.js
-
 "use client";
 import { useState, useEffect } from 'react';
 import Contacto from '../components/Contacto';
