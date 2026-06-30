@@ -9,7 +9,7 @@ export default function Carta({ carta }) {
     const [tabActiva, setTabActiva] = useState('pizzas');
     const [carrito, setCarrito] = useState([]);
     
-    // Bandera para saber si ya cargamos el carrito guardado (evita que se borre al inicio)
+    // Bandera para saber si ya cargamos el carrito guardado
     const [carritoCargado, setCarritoCargado] = useState(false);
 
     // --- ESTADO DE AUTENTICACIÓN ---
@@ -40,22 +40,42 @@ export default function Carta({ carta }) {
         });
     }, []);
 
-    // 2. RECUPERAR EL CARRITO GUARDADO (Solo corre la primera vez que abre la página)
+    // 2. RECUPERAR EL CARRITO GUARDADO
     useEffect(() => {
         const carritoGuardado = sessionStorage.getItem('carritoLaPiazza');
         if (carritoGuardado) {
             setCarrito(JSON.parse(carritoGuardado));
         }
-        setCarritoCargado(true); // Le avisamos a React que ya leímos la memoria
+        setCarritoCargado(true);
     }, []);
 
-    // 3. GUARDAR EL CARRITO (Corre cada vez que agregás o sacás algo del carrito)
+    // 3. GUARDAR EL CARRITO
     useEffect(() => {
-        // Solo guardamos si ya terminamos de cargar el paso anterior
         if (carritoCargado) {
             sessionStorage.setItem('carritoLaPiazza', JSON.stringify(carrito));
         }
     }, [carrito, carritoCargado]);
+
+    // 🚀 4. ESCUCHAR RETORNO DE MERCADO PAGO
+    useEffect(() => {
+        // Buscamos si existen los parámetros ?pago=exito o ?pago=fallo en la URL
+        const params = new URLSearchParams(window.location.search);
+        const estadoPago = params.get('pago');
+
+        if (estadoPago === 'exito') {
+            setModalPaso(3); // Abrimos el modal de Pedido Confirmado
+            
+            // Limpiamos el carrito por las dudas si quedaba algo en sessionStorage
+            setCarrito([]);
+            sessionStorage.removeItem('carritoLaPiazza');
+
+            // Limpiamos los parámetros de la URL para que si el usuario refresca la página no salte el modal de nuevo
+            window.history.replaceState({}, document.title, window.location.pathname);
+        } else if (estadoPago === 'fallo') {
+            alert("❌ El pago fue rechazado o cancelado. Por favor, intentalo de nuevo.");
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    }, []);
 
 
     // --- LÓGICA DE CARRITO AGRUPADO ---
@@ -95,7 +115,6 @@ export default function Carta({ carta }) {
         });
     };
 
-    // Calculamos el total para MOSTRAR en pantalla, pero NO se lo mandamos a la base de datos
     const totalCarrito = carrito.reduce((total, producto) => total + (producto.precio * producto.cantidad), 0);
 
     // --- LÓGICA DE CHECKOUT ---
@@ -116,11 +135,9 @@ export default function Carta({ carta }) {
         await guardarPedido();
     };
 
-    // 🔒 FUNCIÓN ACTUALIZADA: SUPABASE + MERCADO PAGO
     const guardarPedido = async () => {
         setProcesando(true);
         try {
-            // 1. Guardamos el pedido en Supabase
             const payloadItems = carrito.map(prod => ({
                 id: prod.id,
                 nombre: prod.nombre,
@@ -137,7 +154,6 @@ export default function Carta({ carta }) {
 
             if (error) throw new Error(error.message);
 
-            // 2. Pedimos el link de pago a nuestra API de Mercado Pago
             const mpResponse = await fetch('/api/checkout', {
                 method: 'POST',
                 headers: {
@@ -148,22 +164,15 @@ export default function Carta({ carta }) {
 
             const mpData = await mpResponse.json();
 
-            // 3. Verificamos si Mercado Pago nos devolvió el link (init_point)
             if (mpData.init_point) {
-                // Vaciamos el carrito local porque la compra ya está en proceso
-                setCarrito([]);
-                sessionStorage.removeItem('carritoLaPiazza'); 
-                
-                // 🚀 ¡Redirigimos al cliente a la página segura de Mercado Pago!
+                // Redirigimos a Mercado Pago
                 window.location.href = mpData.init_point;
             } else {
-                // AQUÍ ESTÁ EL CAMBIO CLAVE: Leer el error real del backend
-                throw new Error(mpData.error || "Error desconocido al procesar el pago con Mercado Pago.");
+                throw new Error(mpData.error || "Error al procesar el pago con Mercado Pago.");
             }
 
         } catch (error) {
             console.error("Error al procesar el pedido:", error);
-            // Mostrará el error real que frena el checkout
             alert("Detalle del error: " + error.message);
             setProcesando(false);
         }
@@ -271,9 +280,7 @@ export default function Carta({ carta }) {
                         {modalPaso === 1 && (
                             <>
                                 <h3>Confirmá tu pedido</h3>
-                                <p>
-                                    Ingresá tus datos para el envío.
-                                </p>
+                                <p>Ingresá tus datos para el envío.</p>
 
                                 <div className="modal-form-grupo">
                                     <input
@@ -307,11 +314,14 @@ export default function Carta({ carta }) {
 
                         {modalPaso === 3 && (
                             <>
-                                <h3>🍕 ¡Pedido Confirmado!</h3>
+                                <h3>🍕 ¡Pedido Confirmado y Pagado!</h3>
                                 <p className="modal-exito-texto">
-                                    Tu pedido está marchando hacia <strong>{direccion}</strong>.<br />
+                                    Recibimos tu pago con éxito. Tu pedido ya se está preparando en la cocina de <strong>La Piazza</strong>.<br /><br />
                                     ¡Prepará la mesa que en un rato llega!
                                 </p>
+                                <div className="modal-botones">
+                                    <button className="btn-carta" onClick={() => setModalPaso(0)}>Entendido</button>
+                                </div>
                             </>
                         )}
 
