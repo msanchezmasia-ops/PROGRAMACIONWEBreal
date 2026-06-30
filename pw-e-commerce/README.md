@@ -59,29 +59,3 @@ El código sigue las buenas prácticas de modularidad de Next.js para separar la
 │       ├── adminService.js        # Capa de abstracción para servicios de administrador
 │       └── reservasService.js     # Funciones puras para el manejo de reservas
 
-
-## 👥 Credenciales y Simulación de Pagos (Sandbox)
-
-Para facilitar la evaluación y el recorrido por todas las funcionalidades del sistema (incluyendo el panel de administración y el flujo de compra), se proveen las siguientes credenciales.
-
-### 🧑‍💻 Acceso al Panel de Administrador (`/admin`)
-- **Email:** `msanchezmasia@itba.edu.ar`
-- **Contraseña:** `Chester4556!`
-
-
-
-### 💳 Simulación de Compras con Mercado Pago
-El sistema de pagos está configurado en el entorno de pruebas (Sandbox). Para simular una transacción, **no utilice su cuenta personal**. Cuando el sistema lo redirija al checkout, ingrese con la siguiente cuenta de comprador de prueba:
-
-- **Usuario:** `TESTUSER1277339947250989545`
-- **Contraseña:** `TUZO5fdwEV`
-- **Código de verificación (si lo solicita):** `380798`
-
-#### Datos de la Tarjeta de Prueba
-Una vez dentro del flujo de pago, seleccione "Nueva tarjeta de crédito" e ingrese los siguientes datos base:
-- **Red:** Mastercard
-- **Número de Tarjeta:** `5031 7557 3453 0604`
-- **Vencimiento:** `11/30`
-- **Código de Seguridad (CVV):** `123`
-- **Documento (DNI):** `12345678`
-
