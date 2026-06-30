@@ -9,8 +9,6 @@ export default function AdminPedidos() {
     const cargarPedidos = async () => {
         setCargando(true);
         try {
-            // Nota: Si en el futuro solo querés ver los pagados, deberías modificar 
-            // 'obtenerTodosLosPedidos' en adminService para que filtre .eq('pagado', true)
             setPedidos(await obtenerTodosLosPedidos());
         } catch (error) {
             console.error("Error al cargar pedidos:", error);
@@ -23,8 +21,8 @@ export default function AdminPedidos() {
         cargarPedidos();
     }, []);
 
-    const handleEliminar = async (id) => {
-        if (!window.confirm(`¿Seguro que querés eliminar el Pedido #${id}?`)) return;
+    const handleCompletar = async (id) => {
+        if (!window.confirm(`¿Seguro que querés marcar el Pedido #${id} como ENTREGADO / COMPLETADO? (Esto lo borrará de la lista)`)) return;
         try {
             await eliminarPedidoAdmin(id);
             cargarPedidos();
@@ -42,31 +40,35 @@ export default function AdminPedidos() {
                 <div>
                     {pedidos.map(p => (
                         <article key={p.id} className="pedido-card">
-                            <button onClick={() => handleEliminar(p.id)} className="btn-eliminar-peltro btn-eliminar-posicion">
-                                🗑️ Eliminar
+                            
+                            {/* 👇 Botón cambiado a Completar y usando clases CSS puras 👇 */}
+                            <button 
+                                onClick={() => handleCompletar(p.id)} 
+                                className="btn-completar-pedido btn-eliminar-posicion"
+                            >
+                                ✅ Completar
                             </button>
+
                             <div className="pedido-header">
                                 <span>Pedido #{p.id}</span>
                                 
-                                {/* 👇 ACÁ AGREGAMOS EL INDICADOR VISUAL DE PAGO 👇 */}
-                                <span style={{
-                                    backgroundColor: p.pagado ? '#4caf50' : '#f44336',
-                                    color: 'white',
-                                    padding: '4px 8px',
-                                    borderRadius: '12px',
-                                    fontSize: '0.85rem',
-                                    fontWeight: 'bold',
-                                    marginLeft: '10px'
-                                }}>
+                                {/* 👇 Etiquetas sin estilos en línea, usando clases CSS 👇 */}
+                                <span className={`badge-estado ${p.pagado ? 'badge-pagado' : 'badge-no-pagado'}`}>
                                     {p.pagado ? "✅ PAGADO" : "⏳ NO PAGADO"}
                                 </span>
 
-                                <span style={{ marginLeft: 'auto' }}>
+                                <span className="total-pedido">
                                     Total: ${Number(p.total).toLocaleString('es-AR')}
                                 </span>
                             </div>
-                            <p className="pedido-info-linea"><strong>Cliente:</strong> {p.email} | <strong>DNI:</strong> {p.dni || 'N/A'}</p>
+                            
+                            
+                            <p className="pedido-info-linea">
+                                <strong>Cliente:</strong> {p.email} | <strong>Teléfono:</strong> {p.telefono || 'No registrado'}
+                            </p>
+                            
                             <p className="pedido-info-linea"><strong>Destino:</strong> {p.direccion}</p>
+                            
                             <div className="pedido-items-box">
                                 <strong>Items comprados:</strong>
                                 <ul className="pedido-lista-items">

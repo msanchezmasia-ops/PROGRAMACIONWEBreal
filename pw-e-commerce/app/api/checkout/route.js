@@ -1,43 +1,37 @@
 import { NextResponse } from 'next/server';
 import { MercadoPagoConfig, Preference } from 'mercadopago';
 
-// Configuramos el cliente con tu Access Token oculto
 const client = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN });
 
 export async function POST(request) {
     try {
-        // Recibimos el carrito y el ID del pedido desde Carta.js
         const body = await request.json();
-        const { items, pedidoId } = body; // ✅ AHORA SÍ EXTRAEMOS EL pedidoId
+        // ✅ SOLUCIÓN A: Agregamos pedidoId acá
+        const { items, pedidoId } = body; 
 
-        // Mapeamos los items al formato exacto que exige Mercado Pago
         const itemsParaMP = items.map(item => ({
             id: item.id.toString(),
             title: `${item.cantidad}x ${item.nombre} (${item.tamaño})`,
-            quantity: 1, // Agrupamos todo en 1 bloque por producto para simplificar
+            quantity: 1, 
             unit_price: Number(item.precio) * Number(item.cantidad),
             currency_id: 'ARS',
         }));
 
-        // Creamos la "Preferencia" de pago
         const preference = new Preference(client);
         const response = await preference.create({
             body: {
                 items: itemsParaMP,
-                // ✅ Lo pasamos a String por las dudas, ya que Mercado Pago a veces se pone quisquilloso con los UUID
-                external_reference: String(pedidoId), 
+                external_reference: pedidoId ? pedidoId.toString() : '0',
                 back_urls: {
-                    // 💡 TIP: Acordate de cambiar 'tudominio.com' por tu dominio real cuando subas esto,
-                    // o usar localhost:3000 si estás probando en tu compu.
+                    // ✅ SOLUCIÓN B: Cambiamos tudominio por tu web real
                     success: 'https://lapiazza.vercel.app/carta?pago=exito',
                     failure: 'https://lapiazza.vercel.app/carta?pago=fallo',
                     pending: 'https://lapiazza.vercel.app/carta?pago=pendiente',
                 },
-                auto_return: 'approved', // Vuelve automáticamente si se aprueba
+                auto_return: 'approved', 
             }
         });
 
-        // Le devolvemos al frontend el ID de preferencia y el link de pago
         return NextResponse.json({ 
             id: response.id, 
             init_point: response.init_point 

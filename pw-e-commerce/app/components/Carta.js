@@ -3,8 +3,10 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { supabase } from '../../lib/supabase';
 import '../globals.css';
+import { useRouter } from 'next/navigation';
 
 export default function Carta({ carta }) {
+    const router = useRouter();
     const [hover, setHover] = useState(false);
     const [tabActiva, setTabActiva] = useState('pizzas');
     const [carrito, setCarrito] = useState([]);
@@ -26,7 +28,7 @@ export default function Carta({ carta }) {
     // --- ESTADO PARA MENSAJES DE ERROR INTERNOS ---
     const [errorModal, setErrorModal] = useState(null);
 
-    // --- ESTADOS PARA EL HISTORIAL DE PEDIDOS ---
+    // --- ESTADOS PARA LOS PEDIDOS PENDIENTES ---
     const [historialPedidos, setHistorialPedidos] = useState([]);
     const [cargandoHistorial, setCargandoHistorial] = useState(false);
 
@@ -60,21 +62,26 @@ export default function Carta({ carta }) {
         }
     }, [carrito, carritoCargado]);
 
+    // 👇 Corrección del Modal en Loop limpiando la URL con window.history 👇
     useEffect(() => {
-        const params = new URLSearchParams(window.location.search);
-        const estadoPago = params.get('pago');
+        if (typeof window !== 'undefined') {
+            const url = new URL(window.location.href);
+            const estadoPago = url.searchParams.get('pago');
 
-        if (estadoPago === 'exito') {
-            setModalPaso(3); 
-            setCarrito([]);
-            sessionStorage.removeItem('carritoLaPiazza');
-            window.history.replaceState({}, document.title, window.location.pathname);
-        } else if (estadoPago === 'fallo') {
-            setErrorModal("El pago fue rechazado o cancelado. Por favor, intentalo de nuevo.");
-            setModalPaso(5); // Paso 5: Modal de error personalizado
-            window.history.replaceState({}, document.title, window.location.pathname);
+            if (estadoPago === 'exito') {
+                setModalPaso(3); 
+                setCarrito([]);
+                sessionStorage.removeItem('carritoLaPiazza');
+                url.searchParams.delete('pago');
+                window.history.replaceState(null, '', url.toString());
+            } else if (estadoPago === 'fallo') {
+                setErrorModal("El pago fue rechazado o cancelado. Por favor, intentalo de nuevo.");
+                setModalPaso(5);
+                url.searchParams.delete('pago');
+                window.history.replaceState(null, '', url.toString());
+            }
         }
-    }, []);
+    }, []); 
 
     const agregarAlCarrito = (item, tamaño, precio) => {
         setCarrito(prev => {
@@ -112,8 +119,6 @@ export default function Carta({ carta }) {
     };
 
     const vaciarCarrito = () => {
-        // Usamos un modal de error/confirmación controlado en vez de confirm() nativo si querés, 
-        // pero para no sobrecargar de estados, limpiamos directamente o manejamos la acción de forma segura.
         setCarrito([]);
         sessionStorage.removeItem('carritoLaPiazza');
     };
@@ -163,7 +168,7 @@ export default function Carta({ carta }) {
             const mpResponse = await fetch('/api/checkout', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ items: carrito, pedidoId }) // 👈 viaja el id
+                body: JSON.stringify({ items: carrito, pedidoId }) 
             });
 
             const mpData = await mpResponse.json();
@@ -300,7 +305,7 @@ export default function Carta({ carta }) {
                     
                     {usuario && !verificandoAuth && (
                         <button onClick={verHistorial} className="btn-historial-pedidos">
-                            📜 VER PEDIDOS ANTERIORES
+                            ⏳ MIS PEDIDOS PENDIENTES
                         </button>
                     )}
                 </div>
@@ -310,7 +315,6 @@ export default function Carta({ carta }) {
                 <div className="modal-overlay">
                     <div className="modal-content fade-in">
 
-                        {/* Modal de Checkout */}
                         {modalPaso === 1 && (
                             <>
                                 <h3>Confirmá tu pedido</h3>
@@ -351,7 +355,6 @@ export default function Carta({ carta }) {
                             </>
                         )}
 
-                        {/* Modal de Éxito de Pago */}
                         {modalPaso === 3 && (
                             <>
                                 <h3>🍕 ¡Pedido Confirmado y Pagado!</h3>
@@ -365,17 +368,16 @@ export default function Carta({ carta }) {
                             </>
                         )}
 
-                        {/* Modal de Historial de Pedidos */}
                         {modalPaso === 4 && (
                             <>
-                                <h3>📜 Tus Pedidos Anteriores</h3>
+                                <h3>⏳ Tus Pedidos Pendientes</h3>
                                 {errorModal && <div className="modal-alerta-error fade-in">{errorModal}</div>}
                                 
                                 <div className="historial-contenedor">
                                     {cargandoHistorial ? (
                                         <p className="texto-cargando">Buscando en el horno...</p>
                                     ) : historialPedidos.length === 0 ? (
-                                        <p className="texto-vacio-historial">Todavía no realizaste ningún pedido con nosotros.</p>
+                                        <p className="texto-vacio-historial">No tenés ningún pedido pendiente de entrega.</p>
                                     ) : (
                                         <ul className="historial-lista">
                                             {historialPedidos.map((ped) => (
@@ -398,7 +400,6 @@ export default function Carta({ carta }) {
                             </>
                         )}
 
-                        {/* Modal de Errores Generales del Sistema (Reemplazo definitivo del alert) */}
                         {modalPaso === 5 && (
                             <>
                                 <h3>⚠️ Algo no salió bien</h3>

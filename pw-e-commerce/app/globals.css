@@ -1546,3 +1546,46 @@ footer em {
     color: #888888;
     margin-bottom: 20px;
 }
+
+
+/* =========================================
+   ESTILOS PARA EL PANEL DE ADMIN (AdminPedidos)
+   ========================================= */
+
+.btn-completar-pedido {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn-completar-pedido:hover {
+    background-color: #45a049;
+}
+
+/* Clases combinadas para la etiqueta de pago */
+.badge-estado {
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.badge-pagado {
+    background-color: #4caf50;
+}
+
+.badge-no-pagado {
+    background-color: #f44336;
+}
+
+.total-pedido {
+    margin-left: auto;
+    font-weight: bold;
+}
