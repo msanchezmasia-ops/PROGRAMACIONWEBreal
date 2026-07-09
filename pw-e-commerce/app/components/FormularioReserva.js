@@ -35,30 +35,48 @@ export default function FormularioReserva() {
 
     const validar = () => {
         const err = {};
-        if (!nombre.trim()) err.nombre = 'Obligatorio.';
+        
+        // Regla: Solo letras (con acentos/ñ) y espacios.
+        const regexNombre = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
+
+        if (!nombre.trim()) {
+            err.nombre = 'El nombre es obligatorio.';
+        } else if (!regexNombre.test(nombre)) {
+            err.nombre = 'No se permiten números ni símbolos.';
+        }
+
         if (!fecha) err.fecha = 'Elegí un día.';
         if (!hora) err.hora = 'Elegí un horario.';
         if (!personas || personas < 1) err.personas = 'Falta cantidad.';
-        return err;
+
+        // Guardamos los errores para que la pantalla los muestre
+        setErrores(err);
+        
+        // Si no hay ninguna llave en el objeto de errores, devuelve TRUE (es válido)
+        return Object.keys(err).length === 0;
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setErrorServidor(null);
-        
-        const err = validar();
-        if (Object.keys(err).length > 0) {
-            setErrores(err);
-            return;
-        }
-        setErrores({});
+        setErrorServidor(null); 
 
-        try {
-            // Usamos la función separada
-            await crearReserva({ nombre, email, fecha, hora, personas: Number(personas) });
-            setEnviado(true);
-        } catch (error) {
-            setErrorServidor("Hubo un problema al procesar tu reserva.");
+        // Solo si validar() devuelve TRUE, intentamos guardar
+        if (validar()) {
+            try {
+                const nuevaReserva = {
+                    nombre,
+                    email,
+                    fecha,
+                    hora,
+                    personas: parseInt(personas)
+                };
+                
+                await crearReserva(nuevaReserva);
+                setEnviado(true); 
+
+            } catch (error) {
+                setErrorServidor(error.message);
+            }
         }
     };
 
@@ -90,7 +108,15 @@ export default function FormularioReserva() {
 
             <div className="campo-grupo">
                 <label className="campo-label" htmlFor="res-nombre">Nombre</label>
-                <input id="res-nombre" type="text" className={`campo-input${errores.nombre ? ' campo-input--error' : ''}`} value={nombre} onChange={(e) => setNombre(e.target.value)} />
+                <input 
+                    id="res-nombre" 
+                    type="text" 
+                    className={`campo-input${errores.nombre ? ' campo-input--error' : ''}`} 
+                    value={nombre} 
+                    onChange={(e) => setNombre(e.target.value)} 
+                />
+                {/* Texto del error usando clase CSS */}
+                {errores.nombre && <span className="campo-error-texto">{errores.nombre}</span>}
             </div>
 
             <div className="campo-grupo">
@@ -118,6 +144,13 @@ export default function FormularioReserva() {
                 <label className="campo-label" htmlFor="res-personas">Cantidad de personas</label>
                 <input id="res-personas" type="number" min="1" className={`campo-input${errores.personas ? ' campo-input--error' : ''}`} value={personas} onChange={(e) => setPersonas(e.target.value)} />
             </div>
+
+            {/* Mostrar error de validación de la base de datos (Ej: Horario ocupado) */}
+            {errorServidor && (
+                <div className="reserva-error-servidor">
+                    ⚠️ {errorServidor}
+                </div>
+            )}
 
             <button type="submit" className="btn-carta reserva-btn">Confirmar reserva</button>
         </form>
