@@ -1818,3 +1818,36 @@ footer em {
     border-color: var(--dorado);
     transform: translateY(-1px);
 }
+
+/* ==========================================================================
+  ALERTAS Y ERRORES DE FORMULARIOS (RESERVAS)
+   ========================================================================== */
+
+.reserva-error-servidor {
+    background-color: rgba(192, 57, 43, 0.1); /* Fondo translúcido basado en tu var(--rojo) */
+    color: var(--rojo);
+    padding: 1rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    text-align: center;
+    font-weight: bold;
+    border: 1px solid var(--rojo);
+    animation: aparecerError 0.3s ease-in-out;
+}
+
+/* Pequeña animación para que el error aparezca suavemente */
+@keyframes aparecerError {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+
+
+/* Texto de error debajo de los inputs del formulario */
+.campo-error-texto {
+    color: var(--rojo);
+    font-size: 0.85rem;
+    margin-top: 0.3rem;
+    display: block;
+    animation: aparecerError 0.2s ease-in-out;
+}
