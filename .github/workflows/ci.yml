@@ -1,8 +1,10 @@
 name: Integración Continua (CI)
 
 on:
+  push:
+    branches: [ "main" ]
   pull_request:
-    branches: [ "main", "master" ]
+    branches: [ "main" ]
 
 jobs:
   build:
