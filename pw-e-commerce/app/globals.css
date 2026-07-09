@@ -1799,3 +1799,22 @@ footer em {
 .admin-filtro-select:focus {
     border-color: var(--dorado);
 }
+
+/* Botón de acceso al Panel de Administración en la barra de navegación */
+.btn-admin-nav {
+    color: var(--dorado) !important;
+    font-weight: 600;
+    border: 1px dashed rgba(255, 204, 0, 0.4);
+    padding: 0.3rem 0.7rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.btn-admin-nav:hover {
+    background-color: rgba(255, 204,  yellow, 0.08);
+    border-color: var(--dorado);
+    transform: translateY(-1px);
+}
