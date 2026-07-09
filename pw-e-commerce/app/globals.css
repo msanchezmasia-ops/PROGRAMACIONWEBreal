@@ -1588,3 +1588,233 @@ footer em {
     margin-left: auto;
     font-weight: bold;
 }
+
+/* ==========================================================================
+   PANEL DE ADMINISTRACIÓN - GESTIÓN DE PEDIDOS (VERSIÓN "LA PIAZZA")
+   ========================================================================== */
+
+/* Tipografía y estados generales */
+.admin-subtitulo {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: var(--dorado);
+    border-bottom: 1px solid rgba(255, 204, 0, 0.1); /* Línea dorada sutil */
+    padding-bottom: 0.5rem;
+}
+
+.admin-estado-texto,
+.admin-texto-vacio {
+    text-align: center;
+    color: var(--gris);
+    font-size: 1.1rem;
+    padding: 2rem;
+    font-style: italic;
+}
+
+/* Grid Layout Responsive */
+.admin-grid-pedidos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+/* Tarjeta individual de Pedido (Adaptada al tema oscuro) */
+.admin-tarjeta-pedido {
+    background-color: var(--oscuro);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.admin-tarjeta-pedido:hover {
+    box-shadow: 0 8px 15px rgba(0,0,0,0.5);
+    border-color: rgba(255, 204, 0, 0.3); /* Brillo dorado al pasar el mouse */
+}
+
+/* Modificador visual para diferenciar pedidos entregados */
+.pedido-completado {
+    opacity: 0.6;
+    background-color: var(--marron-oscuro);
+    border-color: rgba(255, 255, 255, 0.02);
+}
+
+/* Cabecera del pedido */
+.pedido-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 1rem;
+}
+
+.pedido-header h3 {
+    margin: 0;
+    font-size: 1.3rem;
+    color: var(--crema);
+    width: 100%;
+}
+
+/* Badges (Etiquetas de estado integradas a tu paleta) */
+.pedido-badge {
+    font-size: 0.7rem;
+    font-weight: bold;
+    padding: 0.3rem 0.6rem;
+    border-radius: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Colores adaptados para modo oscuro */
+.badge-verde { background-color: rgba(46, 204, 113, 0.15); color: #2ecc71; border: 1px solid rgba(46, 204, 113, 0.3); }
+.badge-rojo { background-color: var(--rojo-osc); color: var(--crema); border: 1px solid var(--rojo); }
+.badge-gris { background-color: var(--marron-oscuro); color: var(--gris); border: 1px solid var(--gris); }
+.badge-naranja { background-color: rgba(255, 204, 0, 0.15); color: var(--dorado); border: 1px solid rgba(255, 204, 0, 0.3); }
+
+.total-pedido {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-left: auto;
+    color: var(--dorado);
+}
+
+/* Textos informativos */
+.pedido-info-linea {
+    margin: 0.3rem 0;
+    font-size: 0.95rem;
+    color: var(--gris);
+}
+
+.pedido-info-linea strong {
+    color: var(--crema);
+}
+
+/* Caja para los items comprados */
+.pedido-items-box {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: var(--marron-oscuro);
+    border-radius: 6px;
+    flex-grow: 1;
+    color: var(--crema);
+}
+
+.pedido-lista-items {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0 0 0;
+}
+
+.pedido-item-li {
+    font-size: 0.85rem;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+    padding: 0.35rem 0;
+    color: var(--gris);
+}
+
+.pedido-item-li:last-child {
+    border-bottom: none;
+}
+
+/* Botón principal de la tarjeta (Estilo similar a tu btn-carta) */
+.btn-completar-pedido {
+    background-color: var(--dorado);
+    color: var(--oscuro);
+    border: none;
+    padding: 0.8rem;
+    border-radius: 4px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+    width: 100%;
+}
+
+.btn-completar-pedido:hover {
+    background-color: var(--crema);
+    transform: translateY(-2px);
+}
+
+.pedido-completado .btn-completar-pedido {
+    background-color: var(--gris);
+    color: var(--oscuro);
+}
+
+.pedido-completado .btn-completar-pedido:hover {
+    background-color: #a3968a;
+}
+
+/* Estilos para el contenedor del título y el filtro en la misma línea */
+.admin-pedidos-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.admin-pedidos-header-flex .admin-subtitulo {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.admin-filtro-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.admin-filtro-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--crema);
+}
+
+/* Selector alineado al tema oscuro */
+.admin-filtro-select {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.9rem;
+    border: 1px solid var(--gris);
+    border-radius: 4px;
+    background-color: var(--oscuro);
+    color: var(--crema);
+    cursor: pointer;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.admin-filtro-select:focus {
+    border-color: var(--dorado);
+}
+
+/* Botón de acceso al Panel de Administración en la barra de navegación */
+.btn-admin-nav {
+    color: var(--dorado) !important;
+    font-weight: 600;
+    border: 1px dashed rgba(255, 204, 0, 0.4);
+    padding: 0.3rem 0.7rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.btn-admin-nav:hover {
+    background-color: rgba(255, 204,  yellow, 0.08);
+    border-color: var(--dorado);
+    transform: translateY(-1px);
+}

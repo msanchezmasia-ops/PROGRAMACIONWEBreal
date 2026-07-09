@@ -6,14 +6,41 @@ import { supabase } from '../../lib/supabase';
 
 export default function Nav() {
     const [usuario, setUsuario] = useState(null);
+    const [esAdmin, setEsAdmin] = useState(false); // Estado para verificar si es administrador real
 
     useEffect(() => {
+        // Función interna para comprobar el rol de admin de forma segura
+        async function verificarRolAdmin(user) {
+            if (!user) {
+                setEsAdmin(false);
+                return;
+            }
+            try {
+                // Ejecutamos tu función RPC de Supabase que valida los permisos en el backend
+                const { data: isAdmin, error } = await supabase.rpc('soy_admin');
+                if (!error && isAdmin) {
+                    setEsAdmin(true);
+                } else {
+                    setEsAdmin(false);
+                }
+            } catch (err) {
+                console.error("Error al verificar rol de admin en Nav:", err);
+                setEsAdmin(false);
+            }
+        }
+
+        // 1. Verificación inicial de la sesión al montar el componente
         supabase.auth.getSession().then(({ data: { session } }) => {
-            setUsuario(session?.user ?? null);
+            const user = session?.user ?? null;
+            setUsuario(user);
+            verificarRolAdmin(user);
         });
 
+        // 2. Escucha activa de cambios de estado (Login, Logout, etc.)
         const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-            setUsuario(session?.user ?? null);
+            const user = session?.user ?? null;
+            setUsuario(user);
+            verificarRolAdmin(user);
         });
 
         return () => subscription.unsubscribe();
@@ -27,7 +54,6 @@ export default function Nav() {
         || usuario?.email?.split('@')[0];
 
     return (
-        
         <nav aria-label="Navegación principal">
             <div className="logo">
                 <Image 
@@ -40,11 +66,19 @@ export default function Nav() {
                 <span>La Piazza</span>
             </div>
             
-            
             <ul className="nav-lista">
                 <li><Link href="/">Inicio</Link></li>
                 <li><Link href="/carta">Carta</Link></li>
                 <li><Link href="/contacto">Reserva</Link></li>
+                
+                
+                {esAdmin && (
+                    <li>
+                        <Link href="/admin" className="btn-admin-nav" aria-label="Ir al Panel de Administración">
+                            Panel Admin
+                        </Link>
+                    </li>
+                )}
                 
                 {usuario ? (
                     <li className="nav-item-usuario">
