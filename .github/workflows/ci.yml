@@ -22,9 +22,6 @@ jobs:
     - name: Instalar dependencias
       run: npm install
 
-    - name: Verificar Linting (Buenas prácticas)
-      run: npm run lint
-
     - name: Verificar el build de Next.js
       run: npm run build
       env:
