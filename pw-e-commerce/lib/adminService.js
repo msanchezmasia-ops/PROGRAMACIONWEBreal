@@ -6,16 +6,17 @@ export const obtenerTodosLosPedidos = async () => {
         .from('pedidos')
         .select('*')
         .order('id', { ascending: false })
-        .eq('pagado', true);
+        
     if (error) throw error;
     return data || [];
 };
 
-export const eliminarPedidoAdmin = async (id) => {
+export const actualizarEstadoPedido = async (id, nuevoEstado) => {
     const { error } = await supabase
         .from('pedidos')
-        .delete()
+        .update({ estado: nuevoEstado })
         .eq('id', id);
+        
     if (error) throw error;
     return true;
 };

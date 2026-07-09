@@ -1,17 +1,17 @@
-# 🍕 La Piazza - Plataforma E-commerce Full-Stack para Pizzería
+#  La Piazza - Plataforma E-commerce Full-Stack para Pizzería
 
 Este proyecto es una aplicación web full-stack desarrollada para la materia **PW 2026 Q1**. Se web para una pizzería ("La Piazza") que incluye un catálogo dinámico y accesible, sistema de autenticación de clientes, pasarela de pagos real integrada en entorno de pruebas, gestión de reservas y un panel de administración securizado para el control de pedidos en tiempo real.
 
 ---
 
-### ⚡ Frontend & Framework principal
+###  Frontend & Framework principal
 - **Next.js (v14+) / React (v18+):** Se utiliza el **App Router** para el manejo de rutas nativas del framework, optimización de componentes y serverless API routes internas.
 
-### 🗄️ Backend, Base de Datos y Autenticación
+###  Backend, Base de Datos y Autenticación
 - **Supabase (PostgreSQL):** Utilizado como Base de Datos Relacional para persistir productos, pedidos y reservas.
 - **Supabase Auth:** Módulo nativo para el registro, inicio de sesión y gestión de sesiones de usuarios de manera segura (JWT).
 
-### 📦 Dependencias y Librerías clave a Instalar
+###  Dependencias y Librerías clave a Instalar
 Para que el proyecto funcione correctamente, se deben inicializar y mantener instaladas las siguientes dependencias oficiales en el entorno de Node.js:
 
 1. **`@supabase/supabase-js`** *Comando de instalación:* `npm install @supabase/supabase-js`  
@@ -26,7 +26,7 @@ Para que el proyecto funcione correctamente, se deben inicializar y mantener ins
 
 ---
 
-## 🏗️ Arquitectura y Estructura del Proyecto
+##  Arquitectura y Estructura del Proyecto
 
 El código sigue las buenas prácticas de modularidad de Next.js para separar la interfaz de usuario de las consultas y la lógica de negocio:
 
