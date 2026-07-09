@@ -76,7 +76,7 @@ export default function FormularioLogin() {
                     throw new Error("Ya existe una cuenta con este email. Por favor, iniciá sesión.");
                 }
                 
-                setMensaje('¡Cuenta creada con éxito! Ya podés iniciar sesión con tus datos.');
+                setMensaje('¡Cuenta creada! Te enviamos un enlace de confirmación a tu correo. Por favor, revisalo para poder iniciar sesión.');
                 setEsRegistro(false);
                 limpiarCampos();
 
