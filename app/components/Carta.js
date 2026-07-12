@@ -195,7 +195,7 @@ export default function Carta({ carta }) {
                 .select('*')
                 .eq('email', email)
                 .eq('pagado', true)
-                .eq('entregado', false)
+                .eq('estado', 'pendiente')
                 .order('created_at', { ascending: false });
 
             if (error) throw error;
